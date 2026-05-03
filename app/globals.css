@@ -1,0 +1,154 @@
+/* Satoshi (per Enerlytics brand) — Fontshare CDN. Must precede other rules. */
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0a1330;
+  --color-navy-50: #f4f6fb;
+  --color-navy-100: #e3e7f1;
+  --color-navy-200: #b9c2db;
+  --color-navy-300: #8590b3;
+  --color-navy-700: #1a2447;
+  --color-navy-800: #111a3a;
+
+  --color-blue: #2563eb;
+  --color-blue-soft: #3b82f6;
+  --color-blue-fg: #dbeafe;
+
+  --color-green: #16a34a;
+  --color-green-soft: #22c55e;
+
+  --color-amber: #f59e0b;
+
+  --color-gray: #6b7280;
+  --color-gray-soft: #9ca3af;
+
+  --color-mist: #f3f4f6;
+  --color-paper: #ffffff;
+
+  --font-sans: "Satoshi", "Inter", "Helvetica", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
+
+  --shadow-card: 0 1px 2px rgba(10, 19, 48, 0.04),
+    0 12px 32px -16px rgba(10, 19, 48, 0.18);
+  --shadow-soft: 0 24px 60px -24px rgba(10, 19, 48, 0.55);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-navy);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-blue);
+  color: white;
+}
+
+/* Reusable utilities */
+@utility container-narrow {
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Dotted grid background for hero */
+.bg-dotgrid {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.07) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+  background-position: 0 0;
+}
+
+.bg-dotgrid-light {
+  background-image: radial-gradient(
+    rgba(10, 19, 48, 0.07) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+}
+
+/* Subtle horizon glow used behind the hero mock */
+.glow-blue {
+  background: radial-gradient(
+    60% 60% at 50% 40%,
+    rgba(37, 99, 235, 0.35) 0%,
+    rgba(37, 99, 235, 0) 70%
+  );
+}
+
+/* Fancy underline accent */
+.accent-underline {
+  background-image: linear-gradient(
+    transparent calc(100% - 0.18em),
+    rgba(37, 99, 235, 0.28) calc(100% - 0.18em)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+/* Animated marquee for trust strip */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Live pulse dot */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(22, 163, 74, 0);
+  }
+}
+
+.live-dot {
+  animation: pulse-dot 2s infinite;
+}
