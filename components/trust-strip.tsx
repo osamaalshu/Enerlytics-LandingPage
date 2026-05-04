@@ -28,11 +28,11 @@ export function TrustStrip() {
             className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-mist to-transparent"
             aria-hidden
           />
-          <div className="flex w-max animate-marquee items-center gap-12 whitespace-nowrap">
+          <div className="group flex w-max animate-marquee items-center gap-12 whitespace-nowrap [animation-play-state:running] hover:[animation-play-state:paused]">
             {row.map((p, i) => (
               <span
                 key={`${p}-${i}`}
-                className="text-[15px] font-semibold tracking-tight text-navy/55"
+                className="text-[15px] font-semibold tracking-tight text-navy/55 transition-colors hover:text-navy"
               >
                 {p}
               </span>

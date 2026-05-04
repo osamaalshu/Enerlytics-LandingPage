@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
 const team = [
@@ -37,7 +41,7 @@ export function Team() {
   return (
     <section id="team" className="bg-mist/40 py-24 sm:py-28">
       <div className="container-narrow">
-        <div className="max-w-2xl">
+        <Reveal className="max-w-2xl">
           <Eyebrow>Team</Eyebrow>
           <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
             Energy operators, engineers, and AI builders.
@@ -46,34 +50,41 @@ export function Team() {
             Built by people who have run the audits, written the algorithms, and
             negotiated the bills.
           </p>
-        </div>
+        </Reveal>
 
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <RevealGroup
+          as="ul"
+          className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          stagger={0.07}
+        >
           {team.map((m) => (
-            <li
-              key={m.name}
-              className="group flex flex-col gap-4 rounded-2xl border border-navy/10 bg-white p-6 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:border-blue/30"
-            >
-              <div className="flex items-center gap-4">
-                <span
-                  aria-hidden
-                  className="tabular flex h-12 w-12 items-center justify-center rounded-full bg-navy text-[14px] font-semibold tracking-tight text-white"
-                >
-                  {m.initials}
-                </span>
-                <div>
-                  <p className="text-[15.5px] font-semibold tracking-tight text-navy">
-                    {m.name}
-                  </p>
-                  <p className="text-[12.5px] font-medium uppercase tracking-[0.12em] text-blue">
-                    {m.role}
-                  </p>
+            <RevealItem as="li" key={m.name}>
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                className="group flex h-full flex-col gap-4 rounded-2xl border border-navy/10 bg-white p-6 shadow-[var(--shadow-card)] transition-colors hover:border-blue/30"
+              >
+                <div className="flex items-center gap-4">
+                  <span
+                    aria-hidden
+                    className="tabular flex h-12 w-12 items-center justify-center rounded-full bg-navy text-[14px] font-semibold tracking-tight text-white transition-transform duration-500 group-hover:rotate-[-6deg] group-hover:scale-110"
+                  >
+                    {m.initials}
+                  </span>
+                  <div>
+                    <p className="text-[15.5px] font-semibold tracking-tight text-navy">
+                      {m.name}
+                    </p>
+                    <p className="text-[12.5px] font-medium uppercase tracking-[0.12em] text-blue">
+                      {m.role}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <p className="text-[13.5px] leading-relaxed text-gray">{m.bio}</p>
-            </li>
+                <p className="text-[13.5px] leading-relaxed text-gray">{m.bio}</p>
+              </motion.div>
+            </RevealItem>
           ))}
-        </ul>
+        </RevealGroup>
       </div>
     </section>
   );
