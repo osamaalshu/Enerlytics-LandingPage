@@ -1,7 +1,6 @@
 import { AnimatedCounter } from "@/components/animated-counter";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 import { Card } from "@/components/ui/card";
-import { Eyebrow } from "@/components/ui/eyebrow";
 
 const problems = [
   {
@@ -41,8 +40,7 @@ export function Problem() {
       <div className="container-narrow">
         <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
           <Reveal>
-            <Eyebrow>The problem</Eyebrow>
-            <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
+            <h2 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
               The reform is live.
               <br />
               <span className="accent-underline">Your bills are not ready.</span>

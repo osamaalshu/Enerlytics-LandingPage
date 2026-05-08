@@ -8,7 +8,6 @@ import {
 } from "framer-motion";
 import type { ReactNode } from "react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
-import { Eyebrow } from "@/components/ui/eyebrow";
 import { cn } from "@/lib/cn";
 
 const capabilities = [
@@ -44,8 +43,7 @@ export function Capabilities() {
     <section id="platform" className="bg-mist/40 py-24 sm:py-28">
       <div className="container-narrow">
         <Reveal className="max-w-2xl">
-          <Eyebrow>Platform capabilities</Eyebrow>
-          <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
+          <h2 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
             Five tools, one source of truth for energy cost.
           </h2>
           <p className="mt-5 text-[15px] leading-relaxed text-gray">

@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
-import { Eyebrow } from "@/components/ui/eyebrow";
 
 const team = [
   {
@@ -42,8 +41,7 @@ export function Team() {
     <section id="team" className="bg-mist/40 py-24 sm:py-28">
       <div className="container-narrow">
         <Reveal className="max-w-2xl">
-          <Eyebrow>Team</Eyebrow>
-          <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
+          <h2 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
             Energy operators, engineers, and AI builders.
           </h2>
           <p className="mt-5 text-[15px] leading-relaxed text-gray">

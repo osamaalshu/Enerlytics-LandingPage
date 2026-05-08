@@ -5,7 +5,6 @@ import { Activity, Gauge, ShieldCheck } from "lucide-react";
 import { AuroraBackground } from "@/components/aurora-background";
 import { CursorSpotlight } from "@/components/cursor-spotlight";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
-import { Eyebrow } from "@/components/ui/eyebrow";
 
 const steps = [
   {
@@ -43,8 +42,7 @@ export function HowItWorks() {
       <div className="absolute inset-0 bg-dotgrid opacity-30" aria-hidden />
       <CursorSpotlight tone="white" intensity={0.08} size={580} className="container-narrow">
         <Reveal className="max-w-2xl">
-          <Eyebrow tone="white">How it works</Eyebrow>
-          <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.1] tracking-tight sm:text-[44px]">
+          <h2 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight sm:text-[44px]">
             Monitor. Analyse. Govern.
           </h2>
           <p className="mt-5 text-[15px] leading-relaxed text-white/65">

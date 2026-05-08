@@ -1,14 +1,28 @@
+import Image from "next/image";
+
 const partners = [
-  "OQ Alternative Energy",
-  "OQ RPI",
-  "Al Hilal Plastic Factory",
-  "OQ Accelerator",
-  "Imperial College London",
-  "Association of Energy Engineers",
-];
+  { type: "oq-wordmark", key: "oq-ae", suffix: "AE" },
+  { type: "oq-wordmark", key: "oq-rpi", suffix: "RPI" },
+  { type: "oq-wordmark", key: "oq-accelerator", suffix: "Accelerator" },
+  {
+    type: "logo",
+    key: "aee",
+    src: "/brand/logos/aee-logo-transparent.png",
+    alt: "Association of Energy Engineers",
+    width: 174,
+    height: 44,
+  },
+  {
+    type: "logo",
+    key: "aljabr",
+    src: "/brand/logos/aljabr-logo-transparent.png",
+    alt: "Aljabr",
+    width: 174,
+    height: 54,
+  },
+] as const;
 
 export function TrustStrip() {
-  const row = [...partners, ...partners];
   return (
     <section
       aria-label="Validated by partners and pilots"
@@ -19,25 +33,35 @@ export function TrustStrip() {
           Trusted across pilots and institutional partners
         </p>
 
-        <div className="relative mt-6 overflow-hidden">
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-mist to-transparent"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-mist to-transparent"
-            aria-hidden
-          />
-          <div className="group flex w-max animate-marquee items-center gap-12 whitespace-nowrap [animation-play-state:running] hover:[animation-play-state:paused]">
-            {row.map((p, i) => (
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-14">
+          {partners.map((p) => {
+            if (p.type === "oq-wordmark") {
+              return (
+                <span
+                  key={p.key}
+                  className="inline-flex h-12 min-w-[180px] items-center justify-center text-[38px] font-semibold tracking-tight text-navy/80 transition-colors hover:text-navy sm:text-[40px]"
+                >
+                  <span className="text-[#f68b1f]">OQ</span>
+                  <span className="ml-1">{p.suffix}</span>
+                </span>
+              );
+            }
+
+            return (
               <span
-                key={`${p}-${i}`}
-                className="text-[15px] font-semibold tracking-tight text-navy/55 transition-colors hover:text-navy"
+                key={p.key}
+                className="inline-flex h-12 min-w-[180px] items-center justify-center opacity-80 transition-opacity hover:opacity-100"
               >
-                {p}
+                <Image
+                  src={p.src}
+                  alt={p.alt}
+                  width={p.width}
+                  height={p.height}
+                  className="max-h-9 w-auto object-contain"
+                />
               </span>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

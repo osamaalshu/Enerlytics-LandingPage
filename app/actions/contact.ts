@@ -41,7 +41,7 @@ export async function submitContact(
     name: String(formData.get("name") ?? ""),
     company: String(formData.get("company") ?? ""),
     email: String(formData.get("email") ?? ""),
-    consumption: String(formData.get("consumption") ?? "unsure"),
+    consumption: String(formData.get("consumption") ?? "").trim() || "unsure",
     message: String(formData.get("message") ?? ""),
     website: String(formData.get("website") ?? ""),
   };

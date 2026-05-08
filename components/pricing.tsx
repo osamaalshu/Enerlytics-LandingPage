@@ -5,7 +5,6 @@ import { Check } from "lucide-react";
 import { AnimatedCounter } from "@/components/animated-counter";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
-import { Eyebrow } from "@/components/ui/eyebrow";
 import { cn } from "@/lib/cn";
 
 const tiers = [
@@ -58,8 +57,7 @@ export function Pricing() {
     <section id="pricing" className="bg-paper py-24 sm:py-28">
       <div className="container-narrow">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Eyebrow className="justify-center">Pricing</Eyebrow>
-          <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
+          <h2 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
             Three tiers. One transparent path to lower energy cost.
           </h2>
           <p className="mt-5 text-[15px] leading-relaxed text-gray">

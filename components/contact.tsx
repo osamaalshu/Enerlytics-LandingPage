@@ -8,7 +8,6 @@ import { submitContact, type ContactState } from "@/app/actions/contact";
 import { AuroraBackground } from "@/components/aurora-background";
 import { CursorSpotlight } from "@/components/cursor-spotlight";
 import { Reveal } from "@/components/reveal";
-import { Eyebrow } from "@/components/ui/eyebrow";
 import { cn } from "@/lib/cn";
 
 const initialState: ContactState = { ok: false };
@@ -65,8 +64,7 @@ export function Contact() {
       <CursorSpotlight tone="blue" intensity={0.16} size={520} className="container-narrow">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <Reveal>
-            <Eyebrow tone="white">Book a demo</Eyebrow>
-            <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-[48px]">
+            <h2 className="text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-[48px]">
               The reform is live.
               <br />
               <span className="text-white/85">We are ready.</span>
@@ -152,23 +150,12 @@ export function Contact() {
                 />
 
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <Field
-                    label="Full name"
-                    name="name"
-                    placeholder="Muath Al Hinai"
-                    error={state.errors?.name}
-                  />
-                  <Field
-                    label="Company"
-                    name="company"
-                    placeholder="OQ Alternative Energy"
-                    error={state.errors?.company}
-                  />
+                  <Field label="Full name" name="name" error={state.errors?.name} />
+                  <Field label="Company" name="company" error={state.errors?.company} />
                   <Field
                     label="Work email"
                     name="email"
                     type="email"
-                    placeholder="muath@company.om"
                     error={state.errors?.email}
                     className="sm:col-span-2"
                   />
@@ -183,9 +170,12 @@ export function Contact() {
                     <select
                       id="consumption"
                       name="consumption"
-                      defaultValue="unsure"
+                      defaultValue=""
                       className={cn(inputBase, "mt-2 appearance-none pr-10")}
                     >
+                      <option value="" disabled>
+                        {"\u200b"}
+                      </option>
                       {consumptionOptions.map((o) => (
                         <option key={o.value} value={o.value}>
                           {o.label}
@@ -210,7 +200,6 @@ export function Contact() {
                       id="message"
                       name="message"
                       rows={4}
-                      placeholder="One or two lines on the buildings, current bills, and what 'success' looks like for you."
                       className={cn(inputBase, "mt-2 h-auto py-3 leading-relaxed")}
                     />
                     {state.errors?.message && (
@@ -227,10 +216,7 @@ export function Contact() {
                   </p>
                 )}
 
-                <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-[12px] text-navy/55">
-                    We respond within one business day.
-                  </p>
+                <div className="mt-6 flex justify-end">
                   <SubmitButton />
                 </div>
               </form>
@@ -271,7 +257,7 @@ function Field({
         id={name}
         name={name}
         type={type}
-        placeholder={placeholder}
+        {...(placeholder ? { placeholder } : {})}
         autoComplete={
           name === "email"
             ? "email"

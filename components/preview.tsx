@@ -1,7 +1,6 @@
-import { DashboardMock } from "@/components/dashboard-mock";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
+import { TariffBreakdownMock } from "@/components/tariff-breakdown-mock";
 import { TiltCard } from "@/components/tilt-card";
-import { Eyebrow } from "@/components/ui/eyebrow";
 
 const callouts = [
   {
@@ -10,11 +9,11 @@ const callouts = [
   },
   {
     title: "TOU & CRT decomposed",
-    body: "Every cost driver labelled — energy, demand, surcharge, fuel pass-through, fixed charges.",
+    body: "Every cost driver labelled — energy, demand, capacity, supply, VAT, and tariff exposure.",
   },
   {
-    title: "Action, not dashboards",
-    body: "Each anomaly ships with the mitigation: load shed, schedule, or maintenance ticket.",
+    title: "From bill to action",
+    body: "The platform highlights the billing line item creating the risk and links it to load-shifting action.",
   },
 ];
 
@@ -24,14 +23,13 @@ export function Preview() {
       <div className="container-narrow">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-center">
           <Reveal className="max-w-md">
-            <Eyebrow>Live preview</Eyebrow>
-            <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[42px]">
+            <h2 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[42px]">
               Your bill, decoded — to the kilowatt.
             </h2>
             <p className="mt-5 text-[15px] leading-relaxed text-gray">
-              A glance at the operator&apos;s view: real-time load against
-              tariff-aware baseline, peak risk windows highlighted, and
-              one-click mitigation when the CRT threshold is breached.
+              A glance at the finance and operations view: monthly bill
+              breakdowns, effective tariff rate, peak demand charges, and the
+              line item driving the cost increase.
             </p>
 
             <RevealGroup as="ul" className="mt-8 space-y-5" stagger={0.08}>
@@ -60,7 +58,7 @@ export function Preview() {
               aria-hidden
             />
             <TiltCard max={5} lift={14} sheen className="rounded-[28px]">
-              <DashboardMock variant="framed" />
+              <TariffBreakdownMock />
             </TiltCard>
           </Reveal>
         </div>
