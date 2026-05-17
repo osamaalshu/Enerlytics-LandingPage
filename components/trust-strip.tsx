@@ -11,14 +11,16 @@ const partners = [
     alt: "Association of Energy Engineers",
     width: 174,
     height: 44,
+    imageClassName: "max-h-9",
   },
   {
     type: "logo",
     key: "aljabr",
     src: "/brand/logos/aljabr-logo-transparent.png",
     alt: "Aljabr",
-    width: 174,
-    height: 54,
+    width: 220,
+    height: 72,
+    imageClassName: "max-h-12",
   },
 ] as const;
 
@@ -33,13 +35,13 @@ export function TrustStrip() {
           Trusted across pilots and institutional partners
         </p>
 
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-14">
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-x-8 gap-y-6 md:flex-nowrap md:gap-x-8">
           {partners.map((p) => {
             if (p.type === "oq-wordmark") {
               return (
                 <span
                   key={p.key}
-                  className="inline-flex h-12 min-w-[180px] items-center justify-center text-[38px] font-semibold tracking-tight text-navy/80 transition-colors hover:text-navy sm:text-[40px]"
+                  className="inline-flex h-12 min-w-[150px] items-center justify-center text-[38px] font-semibold tracking-tight text-navy/80 transition-colors hover:text-navy sm:text-[40px]"
                 >
                   <span className="text-[#f68b1f]">OQ</span>
                   <span className="ml-1">{p.suffix}</span>
@@ -50,14 +52,14 @@ export function TrustStrip() {
             return (
               <span
                 key={p.key}
-                className="inline-flex h-12 min-w-[180px] items-center justify-center opacity-80 transition-opacity hover:opacity-100"
+                className="inline-flex h-12 min-w-[150px] items-center justify-center opacity-80 transition-opacity hover:opacity-100"
               >
                 <Image
                   src={p.src}
                   alt={p.alt}
                   width={p.width}
                   height={p.height}
-                  className="max-h-9 w-auto object-contain"
+                  className={`${p.imageClassName} w-auto object-contain`}
                 />
               </span>
             );
