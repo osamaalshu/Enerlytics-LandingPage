@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@netlify/blobs": "^10.7.7",
     "framer-motion": "^11.15.0",
     "lucide-react": "^0.460.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "resend": "^4.0.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {

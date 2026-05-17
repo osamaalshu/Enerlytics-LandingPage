@@ -29,7 +29,8 @@ app/
   layout.tsx              # fonts, metadata, OG tags
   page.tsx                # composes all sections
   globals.css             # Tailwind v4 + brand tokens + Satoshi
-  actions/contact.ts      # "use server" — Resend integration
+  actions/contact.ts      # "use server" — validates + stores enquiries
+  responses/page.tsx      # protected table view for enquiries
 
 components/
   nav.tsx                 # sticky pill navigation
@@ -52,35 +53,35 @@ lib/cn.ts                 # tiny classnames helper
 
 The original `Branding/` folder (logo source files, brand book PDF, swatches) stays untouched. Runtime images are duplicated into `public/brand/` so Next can serve and optimize them.
 
-## Contact form
+## Contact form + responses table
 
-The "Book a Demo" form is wired to a Next.js Server Action that validates with `zod`, then ships the message via [Resend](https://resend.com).
+The "Book a Demo" form is wired to a Next.js Server Action that validates with `zod`, then stores enquiries as rows.
 
-Set these env vars (copy `.env.example` to `.env.local`):
+- On Netlify deploys, rows are persisted in Netlify Blobs.
+- In local development, rows are saved to `data/enquiries.json`.
+
+To protect the responses page, set this env var (copy `.env.example` to `.env.local`):
 
 ```bash
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxx
-CONTACT_TO_EMAIL=osama.alshuaili@outlook.com
-CONTACT_FROM_EMAIL="Enerlytics <noreply@enerlytics.om>"
+RESPONSES_PAGE_SECRET=change-this-secret
 ```
 
-When `RESEND_API_KEY` is unset (e.g. local dev without a key), submissions are logged to the server console and the user still sees the success state — useful for visual QA without spending email credits.
+You can then access the table at:
+
+```text
+/responses?key=<RESPONSES_PAGE_SECRET>
+```
 
 The form includes a hidden `website` honeypot for basic spam protection.
 
 ## Deployment
 
-Recommended target: **Vercel** (zero-config for Next.js).
+Recommended target: **Netlify** (because submissions are stored in Netlify Blobs).
 
 ```bash
-# Option 1: link with Vercel CLI
-npx vercel
-npx vercel --prod
-
-# Option 2: connect this GitHub repo at https://vercel.com/new
+# Deploy from Netlify UI by connecting this GitHub repo,
+# then set RESPONSES_PAGE_SECRET in Site settings -> Environment variables.
 ```
-
-After the first deploy, set the three env vars above in the Vercel dashboard (Project → Settings → Environment Variables).
 
 ## Brand tokens
 

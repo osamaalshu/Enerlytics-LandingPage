@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { saveEnquiry } from "@/lib/enquiries-store";
 
 const ContactSchema = z.object({
   name: z.string().min(2, "Please enter your name").max(120),
@@ -61,54 +62,21 @@ export async function submitContact(
     return { ok: true };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL ?? "osama.alshuaili@outlook.com";
-  const from = process.env.CONTACT_FROM_EMAIL ?? "Enerlytics <noreply@enerlytics.om>";
-
-  const subject = `New demo request — ${parsed.data.company}`;
-  const lines = [
-    `Name: ${parsed.data.name}`,
-    `Company: ${parsed.data.company}`,
-    `Email: ${parsed.data.email}`,
-    `Consumption: ${CONSUMPTION_LABEL[parsed.data.consumption]}`,
-    "",
-    "Message:",
-    parsed.data.message,
-  ].join("\n");
-
-  if (!apiKey) {
-    console.error("[contact] RESEND_API_KEY not set — cannot deliver contact emails");
-    return {
-      ok: false,
-      message:
-        "Demo request delivery is temporarily unavailable. Please email osama.alshuaili@outlook.com directly.",
-    };
-  }
-
   try {
-    const { Resend } = await import("resend");
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
-      from,
-      to,
-      replyTo: parsed.data.email,
-      subject,
-      text: lines,
+    await saveEnquiry({
+      name: parsed.data.name,
+      company: parsed.data.company,
+      email: parsed.data.email,
+      consumption: parsed.data.consumption,
+      consumptionLabel: CONSUMPTION_LABEL[parsed.data.consumption],
+      message: parsed.data.message,
     });
-    if (error) {
-      console.error("[contact] resend error", error);
-      return {
-        ok: false,
-        message:
-          "Something went wrong sending your message. Please email osama.alshuaili@outlook.com directly.",
-      };
-    }
   } catch (err) {
-    console.error("[contact] unexpected error", err);
+    console.error("[contact] failed to store enquiry", err);
     return {
       ok: false,
       message:
-        "Something went wrong sending your message. Please email osama.alshuaili@outlook.com directly.",
+        "Something went wrong saving your request. Please email osama.alshuaili@outlook.com directly.",
     };
   }
 
