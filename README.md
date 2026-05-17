@@ -60,7 +60,7 @@ Set these env vars (copy `.env.example` to `.env.local`):
 
 ```bash
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxx
-CONTACT_TO_EMAIL=hello@enerlytics.om
+CONTACT_TO_EMAIL=osama.alshuaili@outlook.com
 CONTACT_FROM_EMAIL="Enerlytics <noreply@enerlytics.om>"
 ```
 

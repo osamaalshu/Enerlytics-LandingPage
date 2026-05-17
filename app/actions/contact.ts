@@ -62,7 +62,7 @@ export async function submitContact(
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL ?? "hello@enerlytics.om";
+  const to = process.env.CONTACT_TO_EMAIL ?? "osama.alshuaili@outlook.com";
   const from = process.env.CONTACT_FROM_EMAIL ?? "Enerlytics <noreply@enerlytics.om>";
 
   const subject = `New demo request — ${parsed.data.company}`;
@@ -101,7 +101,7 @@ export async function submitContact(
       return {
         ok: false,
         message:
-          "Something went wrong sending your message. Please email hello@enerlytics.om directly.",
+          "Something went wrong sending your message. Please email osama.alshuaili@outlook.com directly.",
       };
     }
   } catch (err) {
@@ -109,7 +109,7 @@ export async function submitContact(
     return {
       ok: false,
       message:
-        "Something went wrong sending your message. Please email hello@enerlytics.om directly.",
+        "Something went wrong sending your message. Please email osama.alshuaili@outlook.com directly.",
     };
   }
 

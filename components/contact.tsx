@@ -80,8 +80,8 @@ export function Contact() {
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5">
                   <Mail size={15} />
                 </span>
-                <a href="mailto:hello@enerlytics.om" className="hover:text-white">
-                  hello@enerlytics.om
+                <a href="mailto:osama.alshuaili@outlook.com" className="hover:text-white">
+                  osama.alshuaili@outlook.com
                 </a>
               </div>
               <div className="flex items-center gap-3">
@@ -125,9 +125,9 @@ export function Contact() {
                   In the meantime, you can reach us at{" "}
                   <a
                     className="underline underline-offset-2 hover:text-white"
-                    href="mailto:hello@enerlytics.om"
+                    href="mailto:osama.alshuaili@outlook.com"
                   >
-                    hello@enerlytics.om
+                    osama.alshuaili@outlook.com
                   </a>
                   .
                 </p>
