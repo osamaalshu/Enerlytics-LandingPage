@@ -137,7 +137,6 @@ export function Contact() {
             <Reveal y={28} duration={0.85}>
               <form
                 action={formAction}
-                noValidate
                 className="rounded-3xl border border-white/10 bg-white p-6 text-navy shadow-[var(--shadow-soft)] sm:p-8"
               >
                 <input
@@ -171,6 +170,7 @@ export function Contact() {
                       id="consumption"
                       name="consumption"
                       defaultValue=""
+                      required
                       className={cn(inputBase, "mt-2 appearance-none pr-10")}
                     >
                       <option value="" disabled>
@@ -200,8 +200,13 @@ export function Contact() {
                       id="message"
                       name="message"
                       rows={4}
+                      minLength={10}
+                      required
                       className={cn(inputBase, "mt-2 h-auto py-3 leading-relaxed")}
                     />
+                    <p className="mt-2 text-[12px] text-navy/45">
+                      Minimum 10 characters.
+                    </p>
                     {state.errors?.message && (
                       <p className="mt-2 text-[12px] text-amber">
                         {state.errors.message}
@@ -257,6 +262,8 @@ function Field({
         id={name}
         name={name}
         type={type}
+        required
+        minLength={name === "name" || name === "company" ? 2 : undefined}
         {...(placeholder ? { placeholder } : {})}
         autoComplete={
           name === "email"

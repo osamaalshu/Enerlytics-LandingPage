@@ -77,12 +77,11 @@ export async function submitContact(
   ].join("\n");
 
   if (!apiKey) {
-    console.info("[contact] RESEND_API_KEY not set — logging payload only");
-    console.info(`[contact] to=${to} from=${from} subject="${subject}"`);
-    console.info(lines);
+    console.error("[contact] RESEND_API_KEY not set — cannot deliver contact emails");
     return {
-      ok: true,
-      message: "Thanks — we'll be in touch within one business day.",
+      ok: false,
+      message:
+        "Demo request delivery is temporarily unavailable. Please email osama.alshuaili@outlook.com directly.",
     };
   }
 
