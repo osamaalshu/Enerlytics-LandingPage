@@ -22,7 +22,7 @@ const cols = [
   {
     title: "Resources",
     links: [
-      { href: "mailto:osama.alshuaili@outlook.com", label: "Book a demo" },
+      { href: "mailto:Muathhinai@gmail.com", label: "Book a demo" },
       { href: "https://www.enerlytics.om", label: "enerlytics.om" },
     ],
   },

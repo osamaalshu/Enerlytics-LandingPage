@@ -76,12 +76,12 @@ export async function submitContact(
     return {
       ok: false,
       message:
-        "Something went wrong saving your request. Please email osama.alshuaili@outlook.com directly.",
+        "Something went wrong saving your request. Please email Muathhinai@gmail.com directly.",
     };
   }
 
   return {
     ok: true,
-    message: "Thanks — we'll be in touch within one business day.",
+    message: "Thanks — we will be in touch with you as soon as possible!",
   };
 }

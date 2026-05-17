@@ -70,9 +70,7 @@ export function Contact() {
               <span className="text-white/85">We are ready.</span>
             </h2>
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/65">
-              Tell us a little about your buildings. We&apos;ll come back with a
-              short discovery call and a tailored CRT exposure read in 48
-              hours.
+              Tell us a little about your buildings.
             </p>
 
             <div className="mt-10 space-y-5 text-[14px] text-white/70">
@@ -80,8 +78,8 @@ export function Contact() {
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5">
                   <Mail size={15} />
                 </span>
-                <a href="mailto:osama.alshuaili@outlook.com" className="hover:text-white">
-                  osama.alshuaili@outlook.com
+                <a href="mailto:Muathhinai@gmail.com" className="hover:text-white">
+                  Muathhinai@gmail.com
                 </a>
               </div>
               <div className="flex items-center gap-3">
@@ -125,9 +123,9 @@ export function Contact() {
                   In the meantime, you can reach us at{" "}
                   <a
                     className="underline underline-offset-2 hover:text-white"
-                    href="mailto:osama.alshuaili@outlook.com"
+                    href="mailto:Muathhinai@gmail.com"
                   >
-                    osama.alshuaili@outlook.com
+                    Muathhinai@gmail.com
                   </a>
                   .
                 </p>
