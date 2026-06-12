@@ -9,6 +9,7 @@ import { CursorSpotlight } from "@/components/cursor-spotlight";
 import { DashboardMock } from "@/components/dashboard-mock";
 import { TiltCard } from "@/components/tilt-card";
 import { easeOutExpo } from "@/lib/motion";
+import { useLiteAnimations } from "@/lib/use-lite-animations";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -17,6 +18,8 @@ const fadeUp = {
 
 export function Hero() {
   const reduced = useReducedMotion();
+  // The float endlessly re-composites the whole dashboard card; skip on touch.
+  const lite = useLiteAnimations();
 
   return (
     <section
@@ -130,7 +133,7 @@ export function Hero() {
           >
             <div className="absolute -inset-6 -z-10 rounded-[36px] bg-blue/15 blur-3xl" />
             <motion.div
-              animate={reduced ? undefined : { y: [0, -10, 0] }}
+              animate={reduced || lite ? undefined : { y: [0, -10, 0] }}
               transition={{
                 duration: 7,
                 repeat: Infinity,

@@ -1,9 +1,10 @@
 "use client";
 
-import { animate, motion, useReducedMotion } from "framer-motion";
+import { animate, motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ReceiptText, TriangleAlert } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
+import { useLiteAnimations } from "@/lib/use-lite-animations";
 
 const billRows = [
   {
@@ -104,6 +105,10 @@ function buildRatePath(points: number[]) {
 
 export function TariffBreakdownMock({ className }: { className?: string }) {
   const reduced = useReducedMotion();
+  const lite = useLiteAnimations();
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  // Auto-advance only while the widget is on screen.
+  const inView = useInView(rootRef, { amount: 0.1 });
   const [selectedIndex, setSelectedIndex] = useState(1);
   const detailsRef = useRef<HTMLDivElement | null>(null);
   const rowRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -116,12 +121,12 @@ export function TariffBreakdownMock({ className }: { className?: string }) {
   }, [selectedIndex]);
 
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || !inView) return;
     const id = window.setInterval(() => {
       setSelectedIndex((current) => (current + 1) % billRows.length);
     }, 2800);
     return () => window.clearInterval(id);
-  }, [reduced]);
+  }, [reduced, inView]);
 
   useEffect(() => {
     const container = detailsRef.current;
@@ -131,12 +136,13 @@ export function TariffBreakdownMock({ className }: { className?: string }) {
 
     container.scrollTo({
       top: row.offsetTop - 32,
-      behavior: reduced ? "auto" : "smooth",
+      behavior: reduced || lite ? "auto" : "smooth",
     });
-  }, [selectedIndex, reduced]);
+  }, [selectedIndex, reduced, lite]);
 
   return (
     <div
+      ref={rootRef}
       className={cn(
         "relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-br from-[#0e1a44] via-[#0a1330] to-[#070d22] text-white shadow-[var(--shadow-soft)] ring-1 ring-navy/5",
         className,
@@ -410,10 +416,12 @@ function AnimatedMetric({
   className?: string;
 }) {
   const reduced = useReducedMotion();
+  // Per-frame tweening of four metrics is too costly on phones — jump instead.
+  const lite = useLiteAnimations();
   const [shown, setShown] = useState(value);
 
   useEffect(() => {
-    if (reduced) {
+    if (reduced || lite) {
       setShown(value);
       return;
     }
@@ -427,7 +435,7 @@ function AnimatedMetric({
     return controls.stop;
     // Use the previous rendered value as animation origin.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, reduced]);
+  }, [value, reduced, lite]);
 
   return <span className={className}>{format(shown, decimals)}</span>;
 }
