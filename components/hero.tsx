@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { AnimatedCounter } from "@/components/animated-counter";
 import { AuroraBackground } from "@/components/aurora-background";
@@ -16,6 +16,8 @@ const fadeUp = {
 };
 
 export function Hero() {
+  const reduced = useReducedMotion();
+
   return (
     <section
       id="top"
@@ -42,7 +44,8 @@ export function Hero() {
               className="group inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-[11px] font-medium tracking-wide text-white/80 backdrop-blur"
             >
               <motion.span
-                animate={{ rotate: [0, 14, -14, 0] }}
+                aria-hidden
+                animate={reduced ? undefined : { rotate: [0, 14, -14, 0] }}
                 transition={{
                   duration: 4.5,
                   repeat: Infinity,
@@ -93,6 +96,7 @@ export function Hero() {
                 Book a Demo
                 <ArrowRight
                   size={16}
+                  aria-hidden
                   className="transition-transform duration-300 group-hover:translate-x-0.5"
                 />
               </Button>
@@ -126,7 +130,7 @@ export function Hero() {
           >
             <div className="absolute -inset-6 -z-10 rounded-[36px] bg-blue/15 blur-3xl" />
             <motion.div
-              animate={{ y: [0, -10, 0] }}
+              animate={reduced ? undefined : { y: [0, -10, 0] }}
               transition={{
                 duration: 7,
                 repeat: Infinity,
@@ -154,8 +158,9 @@ interface StatProps {
 
 function Stat({ label, to, prefix, suffix, delay = 0 }: StatProps) {
   return (
-    <div>
-      <dt className="tabular text-2xl font-bold text-white">
+    <div className="flex flex-col-reverse">
+      <dt className="mt-1 text-[12px] leading-snug text-white/70">{label}</dt>
+      <dd className="tabular text-2xl font-bold text-white">
         <AnimatedCounter
           to={to}
           prefix={prefix}
@@ -163,19 +168,20 @@ function Stat({ label, to, prefix, suffix, delay = 0 }: StatProps) {
           duration={1.4}
           delay={delay}
         />
-      </dt>
-      <dd className="mt-1 text-[12px] leading-snug text-white/55">{label}</dd>
+      </dd>
     </div>
   );
 }
 
 function Live() {
+  const reduced = useReducedMotion();
+
   return (
     <span className="inline-flex items-center gap-1.5">
-      <span className="relative flex h-1.5 w-1.5">
+      <span className="relative flex h-1.5 w-1.5" aria-hidden>
         <motion.span
           className="absolute inline-flex h-full w-full rounded-full bg-green"
-          animate={{ scale: [1, 2.4, 1], opacity: [0.6, 0, 0.6] }}
+          animate={reduced ? undefined : { scale: [1, 2.4, 1], opacity: [0.6, 0, 0.6] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
         />
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green" />

@@ -235,6 +235,8 @@ export function TariffBreakdownMock({ className }: { className?: string }) {
                   <button
                     key={bar.month}
                     type="button"
+                    aria-label={`Show ${bar.month} peak demand details`}
+                    aria-pressed={active}
                     onClick={() => setSelectedIndex(billRows.findIndex((item) => item.month === bar.month))}
                     className="flex flex-1 flex-col items-center gap-2"
                   >
@@ -291,6 +293,8 @@ export function TariffBreakdownMock({ className }: { className?: string }) {
                     rowRefs.current[rowIndex] = node;
                   }}
                   type="button"
+                  aria-label={`Inspect ${row.month} bill`}
+                  aria-pressed={rowIndex === selectedIndex}
                   onClick={() => setSelectedIndex(rowIndex)}
                   className={cn(
                     "grid w-full grid-cols-[0.8fr_1fr_1fr_1fr_1fr] border-t border-white/8 px-3 py-2.5 text-left text-[11px] transition",

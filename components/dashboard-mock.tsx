@@ -313,8 +313,11 @@ export function DashboardMock({ className, variant = "hero" }: DashboardMockProp
                   Predicted load exceeds contractual capacity in 15 minutes.
                 </p>
               </div>
+              {/* Illustrative only — kept out of the tab order and AT tree. */}
               <button
                 type="button"
+                tabIndex={-1}
+                aria-hidden="true"
                 className="hidden shrink-0 items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-navy hover:bg-white/90 sm:inline-flex"
               >
                 <Zap size={12} /> Mitigate

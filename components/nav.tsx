@@ -25,6 +25,15 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <header
       className={cn(
@@ -79,17 +88,21 @@ export function Nav() {
 
           <button
             type="button"
-            aria-label="Toggle menu"
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="mobile-menu"
             className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white md:hidden"
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <X size={18} /> : <Menu size={18} />}
+            {open ? <X size={18} aria-hidden /> : <Menu size={18} aria-hidden />}
           </button>
         </div>
 
         {open && (
-          <div className="mt-2 rounded-2xl border border-white/10 bg-navy/95 p-3 backdrop-blur-xl md:hidden">
+          <div
+            id="mobile-menu"
+            className="mt-2 rounded-2xl border border-white/10 bg-navy/95 p-3 backdrop-blur-xl md:hidden"
+          >
             <nav className="flex flex-col gap-1" aria-label="Mobile">
               {links.map((l) => (
                 <Link

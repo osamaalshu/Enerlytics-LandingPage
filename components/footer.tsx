@@ -46,16 +46,28 @@ export function Footer() {
               The CRT-native energy intelligence platform for the GCC&apos;s
               institutional buildings. Monitor. Analyse. Govern.
             </p>
-            <p className="mt-5 text-sm text-white/55">
-              <span className="font-medium text-white/80">brand@enerlytics.om</span>
-              <span className="mx-2 text-white/30">·</span>
-              <span>www.enerlytics.om</span>
+            <p className="mt-5 text-sm text-white/70">
+              <a
+                href="mailto:brand@enerlytics.om"
+                className="font-medium text-white/80 transition hover:text-white"
+              >
+                brand@enerlytics.om
+              </a>
+              <span className="mx-2 text-white/30" aria-hidden>
+                ·
+              </span>
+              <a
+                href="https://www.enerlytics.om"
+                className="transition hover:text-white"
+              >
+                www.enerlytics.om
+              </a>
             </p>
           </div>
 
           {cols.map((col) => (
-            <div key={col.title}>
-              <p className="eyebrow text-white/55">{col.title}</p>
+            <nav key={col.title} aria-label={col.title}>
+              <h2 className="eyebrow text-white/70">{col.title}</h2>
               <ul className="mt-4 space-y-2">
                 {col.links.map((l) => (
                   <li key={l.href}>
@@ -68,11 +80,11 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/45 md:flex-row md:items-center">
+        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/60 md:flex-row md:items-center">
           <p>© 2026 Enerlytics. All rights reserved.</p>
           <p className="tracking-wide">MONITOR · CONTROL · OPTIMIZE</p>
         </div>

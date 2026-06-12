@@ -1,5 +1,5 @@
-/* Satoshi (per Enerlytics brand) — Fontshare CDN. Must precede other rules. */
-@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
+/* Satoshi (per Enerlytics brand) is loaded via <link> in app/layout.tsx so it
+   doesn't block first paint behind a serial CSS @import chain. */
 @import "tailwindcss";
 
 @theme {
@@ -19,6 +19,8 @@
   --color-green-soft: #22c55e;
 
   --color-amber: #f59e0b;
+  /* WCAG AA-compliant amber for small text on white surfaces. */
+  --color-amber-deep: #b45309;
 
   --color-gray: #6b7280;
   --color-gray-soft: #9ca3af;
@@ -57,6 +59,18 @@ body {
 ::selection {
   background: var(--color-blue);
   color: white;
+}
+
+/* Visible focus indicator for keyboard navigation. Elements that style their
+   own focus ring opt out with focus-visible:outline-none. */
+:focus-visible {
+  outline: 2px solid var(--color-blue-soft);
+  outline-offset: 2px;
+}
+
+/* Keep in-page anchor targets clear of the fixed header. */
+[id] {
+  scroll-margin-top: 5.5rem;
 }
 
 /* Reusable utilities */
