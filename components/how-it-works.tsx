@@ -71,10 +71,11 @@ export function HowItWorks() {
                 className="relative flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm"
               >
                 <div className="flex items-center justify-between">
-                  <span className="tabular text-xs font-semibold tracking-widest text-white/40">
+                  <span className="tabular text-xs font-semibold tracking-widest text-white/55">
                     STEP 0{i + 1}
                   </span>
                   <motion.span
+                    aria-hidden
                     whileHover={reduced ? undefined : { rotate: 12, scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 300, damping: 18 }}
                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/[0.06] text-blue-soft"

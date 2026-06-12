@@ -31,7 +31,7 @@ export function TrustStrip() {
       className="border-y border-navy/[0.06] bg-mist/60 py-10"
     >
       <div className="container-narrow">
-        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-navy/45">
+        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-navy/60">
           Trusted across pilots and institutional partners
         </p>
 
