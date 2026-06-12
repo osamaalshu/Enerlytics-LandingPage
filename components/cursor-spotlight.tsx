@@ -3,6 +3,7 @@
 import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { useEffect, useRef, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
+import { useLiteAnimations } from "@/lib/use-lite-animations";
 
 interface CursorSpotlightProps {
   children: ReactNode;
@@ -28,13 +29,16 @@ export function CursorSpotlight({
 }: CursorSpotlightProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  // No cursor to follow on touch devices — skip the blurred layer entirely.
+  const lite = useLiteAnimations();
+  const off = reduced || lite;
   const x = useMotionValue(-size);
   const y = useMotionValue(-size);
   const sx = useSpring(x, { stiffness: 220, damping: 28, mass: 0.6 });
   const sy = useSpring(y, { stiffness: 220, damping: 28, mass: 0.6 });
 
   useEffect(() => {
-    if (reduced) return;
+    if (off) return;
     const el = ref.current;
     if (!el) return;
     const onMove = (e: MouseEvent) => {
@@ -52,7 +56,7 @@ export function CursorSpotlight({
       el.removeEventListener("mousemove", onMove);
       el.removeEventListener("mouseleave", onLeave);
     };
-  }, [reduced, size, x, y]);
+  }, [off, size, x, y]);
 
   const color =
     tone === "white"
@@ -61,7 +65,7 @@ export function CursorSpotlight({
 
   return (
     <div ref={ref} className={cn("relative", className)}>
-      {!reduced && (
+      {!off && (
         <motion.div
           aria-hidden
           className="pointer-events-none absolute z-0 rounded-full blur-3xl"
