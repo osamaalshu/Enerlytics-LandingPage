@@ -14,11 +14,7 @@ import { cn } from "@/lib/cn";
  *   - Measurement & Verification (M&V, IPMVP)
  *   - Retro-Commissioning (RCx)
  */
-const auditLevels = [
-  { tier: 1, name: "Walk-through assessment" },
-  { tier: 2, name: "Energy survey & analysis" },
-  { tier: 3, name: "Investment-grade audit" },
-];
+const auditLevels = [{ tier: 1 }, { tier: 2 }, { tier: 3 }];
 
 /** Depth meter — encodes the real escalation of audit rigor (Level 1 → 3). */
 function DepthMeter({ level }: { level: number }) {
@@ -113,9 +109,6 @@ export function Services() {
                   </div>
                   <p className="mt-3 text-[15px] font-semibold tracking-tight text-navy">
                     Energy Audit — Level {a.tier}
-                  </p>
-                  <p className="mt-1 text-[13px] leading-relaxed text-gray">
-                    {a.name}
                   </p>
                 </div>
               ))}
