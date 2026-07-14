@@ -9,11 +9,9 @@ import { cn } from "@/lib/cn";
 
 const links = [
   { href: "#platform", label: "Platform" },
-  { href: "#solutions", label: "Solutions" },
-  { href: "#services", label: "Services" },
   { href: "#how", label: "How it works" },
-  { href: "#projects", label: "Projects" },
   { href: "#pricing", label: "Pricing" },
+  { href: "#team", label: "Team" },
 ];
 
 export function Nav() {
