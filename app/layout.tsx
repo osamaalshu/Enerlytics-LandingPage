@@ -58,7 +58,7 @@ const organizationJsonLd = {
   name: "Enerlytics",
   url: "https://www.enerlytics.om",
   logo: "https://www.enerlytics.om/brand/logos/horizontal.png",
-  email: "brand@enerlytics.om",
+  email: "info@enerlytics.om",
   description:
     "CRT-native energy intelligence platform for the GCC's institutional buildings. Monitor, analyse, and govern every kilowatt-hour in real time.",
   areaServed: ["OM", "GCC"],

@@ -76,7 +76,7 @@ export async function submitContact(
     return {
       ok: false,
       message:
-        "Something went wrong saving your request. Please email Muathhinai@gmail.com directly.",
+        "Something went wrong saving your request. Please email info@enerlytics.om directly.",
     };
   }
 

@@ -7,6 +7,7 @@ import { Nav } from "@/components/nav";
 import { Preview } from "@/components/preview";
 import { Pricing } from "@/components/pricing";
 import { Problem } from "@/components/problem";
+import { Services } from "@/components/services";
 import { Team } from "@/components/team";
 import { TrustStrip } from "@/components/trust-strip";
 
@@ -21,6 +22,7 @@ export default function HomePage() {
         <Capabilities />
         <Preview />
         <HowItWorks />
+        <Services />
         <Pricing />
         <Team />
         <Contact />

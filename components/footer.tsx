@@ -16,13 +16,13 @@ const cols = [
     links: [
       { href: "#team", label: "Team" },
       { href: "#contact", label: "Contact" },
-      { href: "mailto:brand@enerlytics.om", label: "Brand requests" },
+      { href: "mailto:info@enerlytics.om", label: "Brand requests" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { href: "mailto:Muathhinai@gmail.com", label: "Book a demo" },
+      { href: "mailto:info@enerlytics.om", label: "Book a demo" },
       { href: "https://www.enerlytics.om", label: "enerlytics.om" },
     ],
   },
@@ -48,10 +48,10 @@ export function Footer() {
             </p>
             <p className="mt-5 text-sm text-white/70">
               <a
-                href="mailto:brand@enerlytics.om"
+                href="mailto:info@enerlytics.om"
                 className="font-medium text-white/80 transition hover:text-white"
               >
-                brand@enerlytics.om
+                info@enerlytics.om
               </a>
               <span className="mx-2 text-white/30" aria-hidden>
                 ·
