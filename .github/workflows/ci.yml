@@ -1,0 +1,23 @@
+name: CI
+
+# Guardrail: type-check + build on every PR to main (and on pushes to main).
+# `next build` runs TypeScript type-checking and ESLint, then the production
+# build — so a broken change fails here before it can be merged or deployed.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Type-check & build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
