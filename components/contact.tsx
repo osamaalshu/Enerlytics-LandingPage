@@ -82,8 +82,8 @@ export function Contact() {
                 >
                   <Mail size={15} />
                 </span>
-                <a href="mailto:Muathhinai@gmail.com" className="hover:text-white">
-                  Muathhinai@gmail.com
+                <a href="mailto:info@enerlytics.om" className="hover:text-white">
+                  info@enerlytics.om
                 </a>
               </div>
               <div className="flex items-center gap-3">
@@ -130,9 +130,9 @@ export function Contact() {
                   In the meantime, you can reach us at{" "}
                   <a
                     className="underline underline-offset-2 hover:text-white"
-                    href="mailto:Muathhinai@gmail.com"
+                    href="mailto:info@enerlytics.om"
                   >
-                    Muathhinai@gmail.com
+                    info@enerlytics.om
                   </a>
                   .
                 </p>
