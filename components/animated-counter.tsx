@@ -63,9 +63,18 @@ export function AnimatedCounter({
 
   return (
     <span ref={ref} className={className}>
-      {prefix}
-      {format(value)}
-      {suffix}
+      {/* Screen readers get the final value once; the ticking digits would
+          otherwise be announced as a stream of changing text. */}
+      <span aria-hidden="true">
+        {prefix}
+        {format(value)}
+        {suffix}
+      </span>
+      <span className="sr-only">
+        {prefix}
+        {format(to)}
+        {suffix}
+      </span>
     </span>
   );
 }

@@ -111,11 +111,11 @@ export function Pricing() {
                       delay={0.2 + i * 0.1}
                     />
                   </span>
-                  <span className="text-sm font-medium text-navy/60">
+                  <span className="text-sm font-medium text-navy/70">
                     OMR / mo
                   </span>
                 </div>
-                <p className="mt-2 text-[12.5px] text-navy/55">{t.scale}</p>
+                <p className="mt-2 text-[12.5px] text-navy/70">{t.scale}</p>
 
                 <ul className="mt-7 space-y-3">
                   {t.features.map((f) => (
@@ -123,7 +123,10 @@ export function Pricing() {
                       key={f}
                       className="flex items-start gap-2.5 text-[14px] text-navy/80"
                     >
-                      <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green/12 text-green">
+                      <span
+                        aria-hidden
+                        className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green/12 text-green"
+                      >
                         <Check size={12} strokeWidth={3} />
                       </span>
                       {f}

@@ -9,6 +9,10 @@ import { LiveDashboard } from "@/components/live-dashboard";
  * JavaScript stalls. The signature stays: the live cost monitor below.
  */
 export function Hero() {
+  const reduced = useReducedMotion();
+  // The float endlessly re-composites the whole dashboard card; skip on touch.
+  const lite = useLiteAnimations();
+
   return (
     <section
       id="top"

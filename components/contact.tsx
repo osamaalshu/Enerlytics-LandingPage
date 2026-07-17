@@ -39,6 +39,7 @@ function SubmitButton() {
       {!pending && (
         <ArrowRight
           size={16}
+          aria-hidden
           className="transition-transform duration-300 group-hover:translate-x-0.5"
         />
       )}
@@ -75,7 +76,10 @@ export function Contact() {
 
             <div className="mt-10 space-y-5 text-[14px] text-white/70">
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5">
+                <span
+                  aria-hidden
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5"
+                >
                   <Mail size={15} />
                 </span>
                 <a href="mailto:info@enerlytics.om" className="hover:text-white">
@@ -83,7 +87,10 @@ export function Contact() {
                 </a>
               </div>
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5">
+                <span
+                  aria-hidden
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5"
+                >
                   <CheckCircle2 size={15} />
                 </span>
                 <span>Pilot deployment underway · OQ Accelerator</span>
@@ -169,10 +176,14 @@ export function Contact() {
                       name="consumption"
                       defaultValue=""
                       required
+                      aria-invalid={state.errors?.consumption ? true : undefined}
+                      aria-describedby={
+                        state.errors?.consumption ? "consumption-error" : undefined
+                      }
                       className={cn(inputBase, "mt-2 appearance-none pr-10")}
                     >
                       <option value="" disabled>
-                        {"\u200b"}
+                        Select a range
                       </option>
                       {consumptionOptions.map((o) => (
                         <option key={o.value} value={o.value}>
@@ -181,7 +192,7 @@ export function Contact() {
                       ))}
                     </select>
                     {state.errors?.consumption && (
-                      <p className="mt-2 text-[12px] text-amber">
+                      <p id="consumption-error" className="mt-2 text-[12px] text-amber-deep">
                         {state.errors.consumption}
                       </p>
                     )}
@@ -200,13 +211,18 @@ export function Contact() {
                       rows={4}
                       minLength={10}
                       required
+                      aria-invalid={state.errors?.message ? true : undefined}
+                      aria-describedby={cn(
+                        "message-hint",
+                        state.errors?.message && "message-error",
+                      )}
                       className={cn(inputBase, "mt-2 h-auto py-3 leading-relaxed")}
                     />
-                    <p className="mt-2 text-[12px] text-navy/45">
+                    <p id="message-hint" className="mt-2 text-[12px] text-navy/60">
                       Minimum 10 characters.
                     </p>
                     {state.errors?.message && (
-                      <p className="mt-2 text-[12px] text-amber">
+                      <p id="message-error" className="mt-2 text-[12px] text-amber-deep">
                         {state.errors.message}
                       </p>
                     )}
@@ -214,7 +230,10 @@ export function Contact() {
                 </div>
 
                 {!state.ok && state.message && (
-                  <p className="mt-4 rounded-xl bg-amber/10 px-4 py-2 text-[13px] text-amber">
+                  <p
+                    role="alert"
+                    className="mt-4 rounded-xl bg-amber/10 px-4 py-2 text-[13px] text-amber-deep"
+                  >
                     {state.message}
                   </p>
                 )}
@@ -248,6 +267,7 @@ function Field({
   error,
   className,
 }: FieldProps) {
+  const errorId = `${name}-error`;
   return (
     <div className={className}>
       <label
@@ -263,6 +283,8 @@ function Field({
         required
         minLength={name === "name" || name === "company" ? 2 : undefined}
         {...(placeholder ? { placeholder } : {})}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
         autoComplete={
           name === "email"
             ? "email"
@@ -272,9 +294,13 @@ function Field({
                 ? "organization"
                 : "off"
         }
-        className={cn(inputBase, "mt-2", error && "border-amber/60")}
+        className={cn(inputBase, "mt-2", error && "border-amber-deep/60")}
       />
-      {error && <p className="mt-2 text-[12px] text-amber">{error}</p>}
+      {error && (
+        <p id={errorId} className="mt-2 text-[12px] text-amber-deep">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

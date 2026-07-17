@@ -55,8 +55,8 @@ export function Footer() {
           </div>
 
           {cols.map((col) => (
-            <div key={col.title}>
-              <p className="eyebrow text-white/55">{col.title}</p>
+            <nav key={col.title} aria-label={col.title}>
+              <h2 className="eyebrow text-white/70">{col.title}</h2>
               <ul className="mt-4 space-y-2">
                 {col.links.map((l) => (
                   <li key={l.href}>
@@ -69,11 +69,11 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/45 md:flex-row md:items-center">
+        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/60 md:flex-row md:items-center">
           <p>© 2026 Enerlytics. All rights reserved.</p>
           <p className="tracking-wide">MUSCAT · SULTANATE OF OMAN</p>
         </div>

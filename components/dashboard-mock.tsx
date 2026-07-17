@@ -1,9 +1,10 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowDownRight, ArrowUpRight, TriangleAlert, Zap } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
+import { useLiteAnimations } from "@/lib/use-lite-animations";
 
 const W = 720;
 const H = 220;
@@ -42,6 +43,11 @@ interface DashboardMockProps {
 
 export function DashboardMock({ className, variant = "hero" }: DashboardMockProps) {
   const reduced = useReducedMotion();
+  const lite = useLiteAnimations();
+  const rootRef = useRef<HTMLDivElement>(null);
+  // The live simulation only runs while the widget is actually on screen —
+  // otherwise it keeps re-rendering and animating during unrelated scrolling.
+  const inView = useInView(rootRef, { amount: 0.1 });
   const [actual, setActual] = useState<number[]>(initialActual);
   const [baseline] = useState<number[]>(initialBaseline);
   const [warning, setWarning] = useState(true);
@@ -49,7 +55,7 @@ export function DashboardMock({ className, variant = "hero" }: DashboardMockProp
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || !inView) return;
     const tick = () => {
       setActual((prev) => {
         const last = prev[prev.length - 1] ?? 480;
@@ -66,7 +72,7 @@ export function DashboardMock({ className, variant = "hero" }: DashboardMockProp
       if (tickRef.current) clearInterval(tickRef.current);
       clearInterval(warnTimer);
     };
-  }, [reduced]);
+  }, [reduced, inView]);
 
   // Domain — keep stable so the line breathes inside a fixed range.
   const min = 260;
@@ -87,6 +93,7 @@ export function DashboardMock({ className, variant = "hero" }: DashboardMockProp
 
   return (
     <div
+      ref={rootRef}
       className={cn(
         "relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-br from-[#0e1a44] via-[#0a1330] to-[#070d22] text-white shadow-[var(--shadow-soft)]",
         variant === "framed" && "ring-1 ring-navy/5",
@@ -200,13 +207,6 @@ export function DashboardMock({ className, variant = "hero" }: DashboardMockProp
                 <stop offset="0%" stopColor="#3b82f6" />
                 <stop offset="100%" stopColor="#22d3ee" />
               </linearGradient>
-              <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="3" result="b" />
-                <feMerge>
-                  <feMergeNode in="b" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
             </defs>
 
             {/* horizontal grid */}
@@ -248,6 +248,23 @@ export function DashboardMock({ className, variant = "hero" }: DashboardMockProp
               animate={{ pathLength: 1 }}
               transition={{ duration: 1.4, ease: "easeOut" }}
             />
+            {/* Soft under-stroke stands in for the old feGaussianBlur glow —
+                SVG filters re-rasterize every animation frame on iOS Safari. */}
+            <motion.path
+              d={actualPath}
+              fill="none"
+              stroke="#3b82f6"
+              strokeWidth="7"
+              strokeOpacity="0.28"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1, d: actualPath }}
+              transition={{
+                pathLength: { duration: 1.4, ease: "easeOut" },
+                d: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+              }}
+            />
             <motion.path
               d={actualPath}
               fill="none"
@@ -255,7 +272,6 @@ export function DashboardMock({ className, variant = "hero" }: DashboardMockProp
               strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
-              filter="url(#glow)"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1, d: actualPath }}
               transition={{
@@ -272,7 +288,7 @@ export function DashboardMock({ className, variant = "hero" }: DashboardMockProp
               fill="#3b82f6"
               opacity="0.35"
               animate={
-                reduced
+                reduced || lite
                   ? { r: 6, opacity: 0.35 }
                   : { r: [6, 14, 6], opacity: [0.45, 0, 0.45] }
               }
@@ -313,8 +329,11 @@ export function DashboardMock({ className, variant = "hero" }: DashboardMockProp
                   Predicted load exceeds contractual capacity in 15 minutes.
                 </p>
               </div>
+              {/* Illustrative only — kept out of the tab order and AT tree. */}
               <button
                 type="button"
+                tabIndex={-1}
+                aria-hidden="true"
                 className="hidden shrink-0 items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-navy hover:bg-white/90 sm:inline-flex"
               >
                 <Zap size={12} /> Mitigate
@@ -370,10 +389,7 @@ function KpiTile({
   deltaUp,
 }: KpiTileProps) {
   return (
-    <motion.div
-      layout
-      className="rounded-2xl border border-white/8 bg-white/[0.04] p-4"
-    >
+    <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
       <p className="eyebrow text-white/45">{label}</p>
       <div className="mt-2 flex items-baseline gap-1.5">
         <SmoothNumber
@@ -395,7 +411,7 @@ function KpiTile({
         {deltaUp ? <ArrowUpRight size={11} /> : <ArrowDownRight size={11} />}
         {delta}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -413,9 +429,12 @@ interface SmoothNumberProps {
 function SmoothNumber({ value, decimals, prefix, className }: SmoothNumberProps) {
   const [shown, setShown] = useState(value);
   const reduced = useReducedMotion();
+  // On phones the tween means ~50 extra renders per tile per tick — jump
+  // straight to the value instead.
+  const lite = useLiteAnimations();
 
   useEffect(() => {
-    if (reduced) {
+    if (reduced || lite) {
       setShown(value);
       return;
     }
@@ -434,7 +453,7 @@ function SmoothNumber({ value, decimals, prefix, className }: SmoothNumberProps)
     return () => cancelAnimationFrame(raf);
     // we intentionally only re-run when target value changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, reduced]);
+  }, [value, reduced, lite]);
 
   return (
     <span className={className}>

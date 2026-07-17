@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useLiteAnimations } from "@/lib/use-lite-animations";
 
 interface AuroraBackgroundProps {
   className?: string;
@@ -8,10 +9,13 @@ interface AuroraBackgroundProps {
 
 /**
  * Two slow-drifting gradient orbs that paint a soft aurora on dark sections.
- * Pure transform/opacity animation — GPU friendly.
+ * The orbs render statically on touch devices and for reduced-motion users —
+ * endlessly animating large blurred layers is a major GPU cost on phones.
  */
 export function AuroraBackground({ className }: AuroraBackgroundProps) {
   const reduced = useReducedMotion();
+  const lite = useLiteAnimations();
+  const still = reduced || lite;
 
   return (
     <div
@@ -25,7 +29,7 @@ export function AuroraBackground({ className }: AuroraBackgroundProps) {
             "radial-gradient(circle at 50% 50%, rgba(37,99,235,0.45), transparent 60%)",
         }}
         animate={
-          reduced
+          still
             ? undefined
             : { x: [0, 80, -40, 0], y: [0, -30, 30, 0], opacity: [0.55, 0.8, 0.55] }
         }
@@ -38,7 +42,7 @@ export function AuroraBackground({ className }: AuroraBackgroundProps) {
             "radial-gradient(circle at 50% 50%, rgba(34,211,238,0.30), transparent 60%)",
         }}
         animate={
-          reduced
+          still
             ? undefined
             : { x: [0, -60, 40, 0], y: [0, 40, -20, 0], opacity: [0.45, 0.7, 0.45] }
         }
@@ -51,7 +55,7 @@ export function AuroraBackground({ className }: AuroraBackgroundProps) {
             "radial-gradient(circle at 50% 50%, rgba(124,58,237,0.20), transparent 60%)",
         }}
         animate={
-          reduced
+          still
             ? undefined
             : { x: [-40, 40, -40], y: [-20, 30, -20], opacity: [0.3, 0.55, 0.3] }
         }
