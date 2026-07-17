@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 
 const team = [
@@ -28,12 +27,6 @@ const team = [
     bio: "MSc Energy & Sustainability. CO₂ compliance and reporting consultant in Norway. Designed national-scale energy systems.",
     initials: "MH",
   },
-  {
-    name: "Hicham Lahmidi",
-    role: "Strategic Advisor",
-    bio: "PhD Engineering, 5× AEE certified. COO of Elithis Solutions (€9M). 25 years of institutional energy governance.",
-    initials: "HL",
-  },
 ];
 
 export function Team() {
@@ -52,20 +45,16 @@ export function Team() {
 
         <RevealGroup
           as="ul"
-          className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
           stagger={0.07}
         >
           {team.map((m) => (
             <RevealItem as="li" key={m.name}>
-              <motion.div
-                whileHover={{ y: -6 }}
-                transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                className="group flex h-full flex-col gap-4 rounded-2xl border border-navy/10 bg-white p-6 shadow-[var(--shadow-card)] transition-colors hover:border-blue/30"
-              >
+              <div className="hover-lift group flex h-full flex-col gap-4 rounded-2xl border border-navy/10 bg-white p-6 shadow-[var(--shadow-card)] hover:border-teal/35">
                 <div className="flex items-center gap-4">
                   <span
                     aria-hidden
-                    className="tabular flex h-12 w-12 items-center justify-center rounded-full bg-navy text-[14px] font-semibold tracking-tight text-white transition-transform duration-500 group-hover:rotate-[-6deg] group-hover:scale-110"
+                    className="tabular flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-navy text-[14px] font-semibold tracking-tight text-white"
                   >
                     {m.initials}
                   </span>
@@ -73,13 +62,13 @@ export function Team() {
                     <p className="text-[15.5px] font-semibold tracking-tight text-navy">
                       {m.name}
                     </p>
-                    <p className="text-[12.5px] font-medium uppercase tracking-[0.12em] text-blue">
+                    <p className="text-[12.5px] font-medium uppercase tracking-[0.12em] text-teal">
                       {m.role}
                     </p>
                   </div>
                 </div>
                 <p className="text-[13.5px] leading-relaxed text-gray">{m.bio}</p>
-              </motion.div>
+              </div>
             </RevealItem>
           ))}
         </RevealGroup>

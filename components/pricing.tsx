@@ -9,25 +9,25 @@ import { cn } from "@/lib/cn";
 
 const tiers = [
   {
-    name: "Monitor",
-    headline: "Understand your energy cost exposure",
+    name: "Pilot",
+    headline: "Prove it on a single building",
     price: 250,
-    scale: "0.1 – 1.5 GWh / yr · 3–5% of bill",
+    scale: "1 site · 0.1 – 1.5 GWh / yr",
     features: [
       "Bill normalization and TOU breakdown",
       "Demand visibility reporting",
       "CRT risk flags",
       "Email alerts for peak windows",
     ],
-    cta: "Start with Monitor",
+    cta: "Start a pilot",
   },
   {
-    name: "Analyse",
-    headline: "Identify and quantify avoidable costs",
+    name: "Site",
+    headline: "Run a building at full control",
     price: 500,
-    scale: "1.5 – 5 GWh / yr · 3:1 ROI in year one",
+    scale: "1 – 3 sites · 1.5 – 5 GWh / yr",
     features: [
-      "Everything in Monitor",
+      "Everything in Pilot",
       "Oman-specific baselines and diagnostics",
       "AI anomaly detection and alerts",
       "Load shifting and peak mitigation",
@@ -37,12 +37,12 @@ const tiers = [
     popular: true,
   },
   {
-    name: "Govern",
-    headline: "Control and optimize cost at scale",
+    name: "Portfolio",
+    headline: "Standardize across the estate",
     price: 1050,
-    scale: "5+ GWh / yr · multi-site portfolios",
+    scale: "Multi-site · 5+ GWh / yr",
     features: [
-      "Everything in Analyse",
+      "Everything in Site",
       "Fault detection and diagnostics",
       "Portfolio benchmarking",
       "Predictive maintenance",
@@ -58,11 +58,12 @@ export function Pricing() {
       <div className="container-narrow">
         <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
-            Three tiers. One transparent path to lower energy cost.
+            Plans that scale with your estate.
           </h2>
           <p className="mt-5 text-[15px] leading-relaxed text-gray">
-            Pricing scales with consumption and risk exposure. ROI is benchmarked
-            from real institutional pilots in Oman.
+            Every plan runs the full Monitor → Analyse → Govern workflow. You only
+            choose how many buildings it covers — pricing scales with consumption,
+            benchmarked from real institutional pilots in Oman.
           </p>
         </Reveal>
 

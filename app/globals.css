@@ -1,5 +1,7 @@
 /* Satoshi (per Enerlytics brand) — Fontshare CDN. Must precede other rules. */
 @import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
+/* JetBrains Mono — instrument-grade face for live data readouts (kWh, %, time). */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -14,6 +16,20 @@
   --color-blue: #2563eb;
   --color-blue-soft: #3b82f6;
   --color-blue-fg: #dbeafe;
+
+  /* Brand accent — teal (UI chrome). Blue stays reserved for data ink inside
+     instrument mocks; amber is reserved for money / cost intensity ONLY. */
+  --color-teal: #168aad;
+  --color-teal-soft: #34a0a4;
+  --color-teal-fg: #d7f0f4;
+
+  /* The six canonical loop-layer colors (docs/business_model, Mermaid loop). */
+  --color-layer1: #0b2545;
+  --color-layer2: #13315c;
+  --color-layer3: #1d4e89;
+  --color-layer4: #2a6f97;
+  --color-layer5: #168aad;
+  --color-layer6: #34a0a4;
 
   --color-green: #16a34a;
   --color-green-soft: #22c55e;
@@ -153,18 +169,61 @@ body {
   animation: pulse-dot 2s infinite;
 }
 
-/* Shimmer over a gradient text fill */
-@keyframes shimmer {
-  0% {
-    background-position: 200% 0;
+/* Directional flow along the cycle ring — dashes march clockwise. */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -24;
   }
-  100% {
-    background-position: -200% 0;
+}
+.dash-flow {
+  animation: dash-flow 1.4s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash-flow {
+    animation: none;
   }
 }
 
-.animate-shimmer {
-  animation: shimmer 6s linear infinite;
+/* Hero entrance — pure CSS so it can never gate content behind JS. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.rise-1 { animation-delay: 0.06s; }
+.rise-2 { animation-delay: 0.14s; }
+.rise-3 { animation-delay: 0.22s; }
+.rise-4 { animation-delay: 0.32s; }
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
+}
+
+/* Premium hover: quiet lift + deepened shadow, no spring. */
+@utility hover-lift {
+  transition:
+    transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift,
+  .hover-lift:hover {
+    transform: none;
+    transition: border-color 220ms ease;
+  }
 }
 
 /* Smooth scroll behavior for anchor links */
@@ -175,8 +234,5 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  .animate-shimmer {
-    animation: none;
   }
 }

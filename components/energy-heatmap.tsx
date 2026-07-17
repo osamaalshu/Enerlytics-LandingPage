@@ -18,7 +18,11 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 const SEASON = [0.4, 0.42, 0.54, 0.68, 0.84, 0.96, 1.0, 0.99, 0.87, 0.68, 0.5, 0.43];
 const WEEKDAYS = ["", "Mon", "", "Wed", "", "Fri", ""];
 const REF_YEAR = 2025;
-const CELL = 13; // px, includes gap
+/* CELL sized so the 53-week grid (~848px) matches the hero monitor's
+   max-w-4xl column — the two instrument graphics read as one system. */
+const CELL = 16; // px, includes gap
+const SQ = 12; // px, square size (CELL - gap)
+const GAP = CELL - SQ;
 const DAY_MS = 86400000;
 
 function seeded(m: number, d: number) {
@@ -89,25 +93,21 @@ export function EnergyHeatmap() {
     <section id="year" className="relative overflow-hidden bg-navy py-20 text-white sm:py-24">
       <div className="absolute inset-0 bg-dotgrid opacity-30" aria-hidden />
       <div className="container-narrow relative">
-        <Reveal className="max-w-2xl">
-          <span className="eyebrow text-blue-soft">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-soft opacity-70" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green-soft" />
-            </span>
-            Live · year view
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <span className="eyebrow justify-center text-teal-soft">
+            The year view
           </span>
           <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.04] tracking-tight sm:text-5xl">
             A year of energy, in one glance.
           </h2>
-          <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-white/65">
+          <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-white/65">
             Every square is a day; the brighter it burns, the more kilowatt-hours
             it drew. The cooling season, the quiet weekends, and the months that
             quietly cost the most — all readable in a single look.
           </p>
         </Reveal>
 
-        <Reveal y={24} duration={0.85} className="mt-10">
+        <Reveal y={24} duration={0.85} className="mx-auto mt-10 max-w-4xl">
           {/* readout + legend */}
           <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -129,7 +129,7 @@ export function EnergyHeatmap() {
           </div>
 
           {/* calendar */}
-          <div className="overflow-x-auto pb-2">
+          <div className="flex justify-center overflow-x-auto pb-2">
             <div className="inline-block">
               {/* x-axis: months */}
               <div className="relative mb-1.5 ml-8 h-4" style={{ width: COLS * CELL }}>
@@ -146,21 +146,21 @@ export function EnergyHeatmap() {
 
               <div className="flex">
                 {/* y-axis: weekdays */}
-                <div className="mr-1 flex flex-col" style={{ gap: 3 }}>
+                <div className="mr-1 flex flex-col" style={{ gap: GAP }}>
                   {WEEKDAYS.map((w, r) => (
-                    <span key={r} className="flex items-center font-mono text-[8.5px] text-white/30" style={{ height: 10 }}>
+                    <span key={r} className="flex items-center font-mono text-[8.5px] text-white/30" style={{ height: SQ }}>
                       {w}
                     </span>
                   ))}
                 </div>
 
                 {/* week columns */}
-                <div className="flex" style={{ gap: 3 }}>
+                <div className="flex" style={{ gap: GAP }}>
                   {Array.from({ length: COLS }, (_, col) => (
-                    <div key={col} className="flex flex-col" style={{ gap: 3 }}>
+                    <div key={col} className="flex flex-col" style={{ gap: GAP }}>
                       {Array.from({ length: 7 }, (_, row) => {
                         const cell = DAYS.find((x) => x.col === col && x.row === row);
-                        if (!cell) return <span key={row} style={{ width: 10, height: 10 }} />;
+                        if (!cell) return <span key={row} style={{ width: SQ, height: SQ }} />;
                         const isToday = today?.col === col && today?.row === row;
                         const isHover = hover?.m === cell.m && hover?.d === cell.d;
                         return (
@@ -172,8 +172,8 @@ export function EnergyHeatmap() {
                               isToday ? "ring-2 ring-green-soft" : ""
                             }`}
                             style={{
-                              width: 10,
-                              height: 10,
+                              width: SQ,
+                              height: SQ,
                               background: colorFor(cell.v),
                               boxShadow: isToday ? "0 0 10px rgba(34,197,94,0.85)" : undefined,
                             }}

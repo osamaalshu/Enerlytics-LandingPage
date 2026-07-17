@@ -8,12 +8,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 
 const links = [
+  { href: "#how", label: "How we do it" },
   { href: "#platform", label: "Platform" },
-  { href: "#solutions", label: "Solutions" },
   { href: "#services", label: "Services" },
-  { href: "#how", label: "How it works" },
-  { href: "#projects", label: "Projects" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "#solutions", label: "Who it's for" },
+  { href: "#engagement", label: "Working with us" },
 ];
 
 export function Nav() {
@@ -54,7 +53,7 @@ export function Nav() {
               width={520}
               height={120}
               priority
-              className="h-7 w-auto"
+              className="h-9 w-auto"
             />
           </Link>
 

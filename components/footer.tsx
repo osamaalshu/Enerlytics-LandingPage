@@ -5,10 +5,10 @@ const cols = [
   {
     title: "Platform",
     links: [
+      { href: "#how", label: "How we do it" },
       { href: "#platform", label: "Capabilities" },
-      { href: "#preview", label: "Live preview" },
-      { href: "#how", label: "Monitor / Analyse / Govern" },
-      { href: "#pricing", label: "Pricing" },
+      { href: "#services", label: "Services" },
+      { href: "#engagement", label: "Working with us" },
     ],
   },
   {
@@ -16,13 +16,13 @@ const cols = [
     links: [
       { href: "#team", label: "Team" },
       { href: "#contact", label: "Contact" },
-      { href: "mailto:brand@enerlytics.om", label: "Brand requests" },
+      { href: "mailto:info@enerlytics.om", label: "Brand requests" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { href: "mailto:Muathhinai@gmail.com", label: "Book a demo" },
+      { href: "mailto:info@enerlytics.om", label: "Book a demo" },
       { href: "https://www.enerlytics.om", label: "enerlytics.om" },
     ],
   },
@@ -40,14 +40,15 @@ export function Footer() {
               alt="Enerlytics"
               width={520}
               height={120}
-              className="h-8 w-auto"
+              className="h-10 w-auto"
             />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/65">
               The CRT-native energy intelligence platform for the GCC&apos;s
-              institutional buildings. Monitor. Analyse. Govern.
+              energy-intensive facilities — factories, hotels, schools, and
+              government estates.
             </p>
             <p className="mt-5 text-sm text-white/55">
-              <span className="font-medium text-white/80">brand@enerlytics.om</span>
+              <span className="font-medium text-white/80">info@enerlytics.om</span>
               <span className="mx-2 text-white/30">·</span>
               <span>www.enerlytics.om</span>
             </p>
@@ -74,7 +75,7 @@ export function Footer() {
 
         <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/45 md:flex-row md:items-center">
           <p>© 2026 Enerlytics. All rights reserved.</p>
-          <p className="tracking-wide">MONITOR · CONTROL · OPTIMIZE</p>
+          <p className="tracking-wide">MUSCAT · SULTANATE OF OMAN</p>
         </div>
       </div>
     </footer>

@@ -7,8 +7,8 @@ type Size = "sm" | "md" | "lg";
 
 const base =
   "inline-flex items-center justify-center gap-2 font-medium tracking-tight rounded-full transition-all duration-200 ease-out " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 " +
-  "disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 " +
+  "active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap";
 
 const sizes: Record<Size, string> = {
   sm: "h-9 px-4 text-sm",
@@ -18,7 +18,7 @@ const sizes: Record<Size, string> = {
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-blue text-white shadow-[0_8px_24px_-12px_rgba(37,99,235,0.65)] hover:bg-blue-soft hover:-translate-y-0.5 active:translate-y-0",
+    "bg-teal text-white hover:bg-teal-soft hover:-translate-y-0.5 active:translate-y-0",
   secondary:
     "bg-white/10 text-white border border-white/15 backdrop-blur hover:bg-white/15",
   ghost:

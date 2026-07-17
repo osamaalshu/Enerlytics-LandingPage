@@ -1,40 +1,73 @@
 "use client";
 
 import Image from "next/image";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-} from "framer-motion";
-import type { ReactNode } from "react";
+import Link from "next/link";
+import { ArrowRight, BadgeCheck, Wrench } from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
-import { cn } from "@/lib/cn";
 
-const capabilities = [
+/**
+ * The platform — all six stages IN ORDER (1→6) so the sequence never breaks.
+ * Stages 1–3 and 6 are software cards; stages 4–5 render as engineer-led
+ * cards that point to Services. A visitor reads one straight line, no
+ * arithmetic. Copy is claims-governed: physics-based, no "AI" hand-waving.
+ */
+
+const CHIP = ["#0b2545", "#13315c", "#1d4e89", "#2a6f97", "#168aad", "#34a0a4"];
+
+type Stage = {
+  n: number;
+  name: string;
+  title: string;
+  body: string;
+  icon?: string;
+  engineer?: boolean;
+  lucide?: React.ComponentType<{ size?: number; strokeWidth?: number }>;
+};
+
+const stages: Stage[] = [
   {
+    n: 1,
+    name: "Collect",
     icon: "/brand/icons/insights.png",
-    title: "Real-time load dashboard",
-    body: "Live energy monitoring with TOU (time-of-use) cost breakdown — see every kilowatt as it lands on the bill.",
+    title: "Bill truth, to the baisa",
+    body: "Your CRT bill reconstructed and validated line by line — BST, TUoS, DUoS, standing charges, time-of-use bands. If the bill is wrong, you'll know exactly where.",
   },
   {
-    icon: "/brand/icons/energy.png",
-    title: "Peak risk alerts",
-    body: "Predictive alerts for the May–July summer peak surcharge windows, with clear mitigation paths.",
-  },
-  {
+    n: 2,
+    name: "Understand",
     icon: "/brand/icons/building.png",
-    title: "Tariff-aware baseline",
-    body: "Tracking actuals against Oman-specific regulatory baselines, calibrated to each site and tariff schedule.",
+    title: "Baselines, benchmarks & peak exposure",
+    body: "Site-specific baselines and three-tier benchmarking put every month in context — and show how much of your spend concentrates in the costly peak windows.",
   },
   {
+    n: 3,
+    name: "Diagnose",
     icon: "/brand/icons/optimization.png",
-    title: "Anomaly detection",
-    body: "AI-driven issue triage and fault detection diagnostics — find the kilowatts you should not be paying for.",
+    title: "Physics-based diagnostics",
+    body: "First-principles fault detection on chillers, compressors, pumps and AHUs — each finding graded for confidence and priced in OMR per hour.",
   },
   {
+    n: 4,
+    name: "Improve",
+    engineer: true,
+    lucide: Wrench,
+    title: "Audits & fixes, engineer-led",
+    body: "Data-assisted energy audits and retro-commissioning — our engineers inspect, decide, and sign, working from the platform's evidence.",
+  },
+  {
+    n: 5,
+    name: "Verify",
+    engineer: true,
+    lucide: BadgeCheck,
+    title: "Savings, proven — engineer-led",
+    body: "IPMVP-aligned measurement and verification against frozen baselines. Savings are approved by qualified professionals, not assumed.",
+  },
+  {
+    n: 6,
+    name: "Report",
     icon: "/brand/icons/cost_down.png",
-    title: "Audit-ready reporting",
-    body: "Automated APSR-grade compliance reports for institutional governance, board reviews, and CRT audits.",
+    title: "Evidence-grade reporting",
+    body: "Board-ready reports with a full audit trail: versioned rates, cited sources, and findings separated by what's measured versus estimated.",
   },
 ];
 
@@ -43,42 +76,27 @@ export function Capabilities() {
     <section id="platform" className="bg-mist/40 py-24 sm:py-28">
       <div className="container-narrow">
         <Reveal className="max-w-2xl">
-          <h2 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
-            Five tools, one source of truth for energy cost.
+          <span className="eyebrow text-teal">The platform</span>
+          <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-navy sm:text-5xl">
+            The analysis is software.
+            <br />
+            The judgment is human.
           </h2>
           <p className="mt-5 text-[15px] leading-relaxed text-gray">
-            Built natively for Oman&apos;s CRT framework — the platform turns
-            meter data into decisions your operations, finance, and compliance
-            teams can share.
+            The same six stages, in order. The platform does the heavy
+            analysis; our engineers make the calls that need a person — and
+            sign them.
           </p>
         </Reveal>
 
-        <RevealGroup
-          className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-          stagger={0.07}
-        >
-          {capabilities.map((c, i) => (
-            <RevealItem
-              key={c.title}
-              className={cn(i === 0 ? "lg:row-span-2" : "")}
-            >
-              <CapabilityCard
-                icon={c.icon}
-                title={c.title}
-                body={c.body}
-                featured={i === 0}
-                live={
-                  i === 0 ? (
-                    <div className="mt-auto rounded-xl border border-navy/10 bg-mist/70 p-4">
-                      <p className="eyebrow text-navy/55">Live signal</p>
-                      <p className="mt-2 text-[13px] leading-relaxed text-navy/80">
-                        Sub-15-minute granularity. Aggregated to circuits, sites,
-                        and portfolios.
-                      </p>
-                    </div>
-                  ) : null
-                }
-              />
+        <RevealGroup className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" stagger={0.07}>
+          {stages.map((s) => (
+            <RevealItem key={s.n}>
+              {s.engineer && s.lucide ? (
+                <EngineerCard n={s.n} name={s.name} lucide={s.lucide} title={s.title} body={s.body} />
+              ) : (
+                <SoftwareCard n={s.n} name={s.name} icon={s.icon} title={s.title} body={s.body} />
+              )}
             </RevealItem>
           ))}
         </RevealGroup>
@@ -87,58 +105,82 @@ export function Capabilities() {
   );
 }
 
-interface CapabilityCardProps {
-  icon: string;
-  title: string;
-  body: string;
-  featured?: boolean;
-  live?: ReactNode;
+function StageChip({ n, name }: { n: number; name: string }) {
+  return (
+    <span
+      className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[10px] tracking-[0.12em] text-white"
+      style={{ background: CHIP[n - 1] }}
+    >
+      0{n} · {name.toUpperCase()}
+    </span>
+  );
 }
 
-function CapabilityCard({ icon, title, body, featured, live }: CapabilityCardProps) {
-  const mx = useMotionValue(50);
-  const my = useMotionValue(50);
-  const glow = useMotionTemplate`radial-gradient(420px circle at ${mx}% ${my}%, rgba(37,99,235,0.13), transparent 55%)`;
-
-  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    mx.set(((e.clientX - r.left) / r.width) * 100);
-    my.set(((e.clientY - r.top) / r.height) * 100);
-  };
-
+function SoftwareCard({
+  n,
+  name,
+  icon,
+  title,
+  body,
+}: {
+  n: number;
+  name: string;
+  icon?: string;
+  title: string;
+  body: string;
+}) {
   return (
-    <motion.article
-      onMouseMove={handleMove}
-      whileHover={{ y: -6 }}
-      transition={{ type: "spring", stiffness: 260, damping: 22 }}
-      className={cn(
-        "group relative flex h-full flex-col gap-4 overflow-hidden rounded-2xl border border-navy/10 bg-white p-6 shadow-[var(--shadow-card)] transition-colors hover:border-blue/30",
-        featured && "lg:p-8",
-      )}
-    >
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: glow }}
-      />
-      <div className="relative">
-        <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-mist transition-colors group-hover:bg-blue/10">
+    <article className="hover-lift group relative flex h-full flex-col overflow-hidden rounded-2xl border border-navy/10 bg-white p-6 shadow-[var(--shadow-card)] hover:border-teal/35">
+      <StageChip n={n} name={name} />
+      <div className="flex h-13 w-13 items-center justify-center rounded-2xl bg-mist ring-1 ring-navy/8">
+        {icon && (
           <Image
             src={icon}
             alt=""
             width={28}
             height={28}
-            className="h-7 w-7 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-[-4deg]"
+            className="h-7 w-7 object-contain"
           />
-        </div>
+        )}
       </div>
-      <div className="relative">
-        <h3 className="text-[17px] font-semibold tracking-tight text-navy">
-          {title}
-        </h3>
-        <p className="mt-2 text-[14px] leading-relaxed text-gray">{body}</p>
+      <h3 className="mt-5 text-[17px] font-semibold tracking-tight text-navy">
+        {title}
+      </h3>
+      <p className="mt-2 text-[14px] leading-relaxed text-gray">{body}</p>
+    </article>
+  );
+}
+
+function EngineerCard({
+  n,
+  name,
+  lucide: Icon,
+  title,
+  body,
+}: {
+  n: number;
+  name: string;
+  lucide: React.ComponentType<{ size?: number; strokeWidth?: number }>;
+  title: string;
+  body: string;
+}) {
+  return (
+    <article className="hover-lift group relative flex h-full flex-col overflow-hidden rounded-2xl border border-dashed border-navy/20 bg-mist/50 p-6 hover:border-teal/45">
+      <StageChip n={n} name={name} />
+      <div className="flex h-13 w-13 items-center justify-center rounded-2xl bg-navy text-white">
+        <Icon size={24} strokeWidth={1.75} />
       </div>
-      {live}
-    </motion.article>
+      <h3 className="mt-5 text-[17px] font-semibold tracking-tight text-navy">
+        {title}
+      </h3>
+      <p className="mt-2 flex-1 text-[14px] leading-relaxed text-gray">{body}</p>
+      <Link
+        href="#services"
+        className="mt-4 inline-flex items-center gap-1.5 border-t border-navy/8 pt-3 font-mono text-[11px] tracking-wide text-teal transition-colors hover:text-teal-soft"
+      >
+        WITH OUR ENGINEERS — SEE SERVICES
+        <ArrowRight size={12} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+      </Link>
+    </article>
   );
 }

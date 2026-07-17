@@ -29,9 +29,9 @@ function SubmitButton() {
       type="submit"
       disabled={pending}
       className={cn(
-        "group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-blue px-6 text-[15px] font-medium text-white transition-colors",
-        "shadow-[0_8px_24px_-12px_rgba(37,99,235,0.65)] hover:bg-blue-soft",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2",
+        "group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-teal px-6 text-[15px] font-medium text-white transition-colors",
+        "hover:bg-teal-soft",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2",
         "disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto",
       )}
     >
@@ -70,7 +70,7 @@ export function Contact() {
               <span className="text-white/85">We are ready.</span>
             </h2>
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/65">
-              Tell us a little about your buildings.
+              Tell us a little about your facilities.
             </p>
 
             <div className="mt-10 space-y-5 text-[14px] text-white/70">
@@ -78,8 +78,8 @@ export function Contact() {
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5">
                   <Mail size={15} />
                 </span>
-                <a href="mailto:Muathhinai@gmail.com" className="hover:text-white">
-                  Muathhinai@gmail.com
+                <a href="mailto:info@enerlytics.om" className="hover:text-white">
+                  info@enerlytics.om
                 </a>
               </div>
               <div className="flex items-center gap-3">
@@ -123,9 +123,9 @@ export function Contact() {
                   In the meantime, you can reach us at{" "}
                   <a
                     className="underline underline-offset-2 hover:text-white"
-                    href="mailto:Muathhinai@gmail.com"
+                    href="mailto:info@enerlytics.om"
                   >
-                    Muathhinai@gmail.com
+                    info@enerlytics.om
                   </a>
                   .
                 </p>

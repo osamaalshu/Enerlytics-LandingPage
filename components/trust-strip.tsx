@@ -32,7 +32,7 @@ export function TrustStrip() {
     >
       <div className="container-narrow">
         <p className="text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-navy/45">
-          Trusted across pilots and institutional partners
+          Our partners
         </p>
 
         <div className="mt-7 flex flex-wrap items-center justify-center gap-x-8 gap-y-6 md:flex-nowrap md:gap-x-8">
