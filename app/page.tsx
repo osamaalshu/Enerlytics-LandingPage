@@ -9,6 +9,7 @@ import { Nav } from "@/components/nav";
 import { Preview } from "@/components/preview";
 import { Problem } from "@/components/problem";
 import { Services } from "@/components/services";
+import { Solutions } from "@/components/solutions";
 import { Team } from "@/components/team";
 import { TheLoop } from "@/components/the-loop";
 import { TrustStrip } from "@/components/trust-strip";
