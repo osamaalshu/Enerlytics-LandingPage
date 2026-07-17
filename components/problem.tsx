@@ -47,7 +47,7 @@ export function Problem() {
             </h2>
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-gray">
               Oman&apos;s energy reform has introduced structural risk into
-              institutional energy performance. Three problems compound every
+              every facility&apos;s energy cost. Three problems compound every
               billing cycle.
             </p>
           </Reveal>

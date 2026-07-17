@@ -5,11 +5,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.enerlytics.om"),
   title: {
-    default: "Enerlytics — Smarter Buildings. Lower Costs.",
+    default: "Enerlytics — Energy intelligence for GCC facilities.",
     template: "%s · Enerlytics",
   },
   description:
-    "Enerlytics is the CRT-native energy intelligence platform for the GCC's institutional buildings. Monitor, analyse, and govern every kilowatt-hour in real time.",
+    "Enerlytics is the CRT-native energy intelligence platform for GCC facilities — factories, hotels, schools, and government estates. Validated data, diagnosed causes, priced fixes, verified savings.",
   keywords: [
     "energy intelligence",
     "CRT",
@@ -25,18 +25,18 @@ export const metadata: Metadata = {
   creator: "Enerlytics",
   openGraph: {
     type: "website",
-    title: "Enerlytics — Smarter Buildings. Lower Costs.",
+    title: "Enerlytics — Energy intelligence for GCC facilities.",
     description:
-      "Live cost intelligence for the GCC's institutional buildings. Monitor, Analyse, Govern.",
+      "Validated data, diagnosed causes, priced fixes, verified savings — for factories, hotels, schools, and government estates.",
     url: "https://www.enerlytics.om",
     siteName: "Enerlytics",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Enerlytics — Smarter Buildings. Lower Costs.",
+    title: "Enerlytics — Energy intelligence for GCC facilities.",
     description:
-      "Live cost intelligence for the GCC's institutional buildings.",
+      "Validated data, diagnosed causes, priced fixes, verified savings — for GCC facilities.",
   },
   icons: {
     icon: [
