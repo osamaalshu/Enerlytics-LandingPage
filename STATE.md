@@ -11,7 +11,9 @@ Lighthouse local prod (final): desktop 99/97/100/100, mobile 94/97/100/100 (perf
 Independent `verifier` subagent: PASS on all 8 claims (CHANGES.log "Verified").
 
 ## In progress
-`redesign/cinematic` → built, verified, **uncommitted, unpushed**. Waiting on founder review (Build
+**SHIPPED to PR #7** (osamaalshu/Enerlytics-LandingPage, branch redesign/cinematic, commit 3633cf2) on founder's "ship it" 2026-09-04. Waiting on the founder/Osama to merge → Netlify deploys. PR not yet committed to main locally.
+
+Earlier: `redesign/cinematic` → built, verified, **uncommitted, unpushed**. Waiting on founder review (Build
 Workflow stage 8). Then: commit → PR to osamaalshu/Enerlytics-LandingPage → founder merges (Netlify).
 
 ## Done
@@ -41,7 +43,9 @@ Workflow stage 8). Then: commit → PR to osamaalshu/Enerlytics-LandingPage → 
 - Floating-point SVG path strings differ server vs client → round coordinates.
 
 ## Next immediate step
-v4 running locally: heat map (I), drift chart (IV), site map (V + VII), defensibility columns (VIII).
+Merge PR #7 (founder or Osama). After merge: confirm the Netlify deploy state via api.netlify.com/api/v1/sites/af712a52-80f4-4ed3-b130-52b8d3115d32/deploys, then open enerlytics.om on a phone. Then footage.
+
+Earlier: v4 running locally: heat map (I), drift chart (IV), site map (V + VII), defensibility columns (VIII).
 Founder scores it; if it clears → commit + PR. Footage still the last lever (USD ~20 OpenAI credit or Higgsfield).
 
 Earlier: Founder reviews v2 at http://localhost:3000 and scores it. If it clears, commit + PR. Motion clips still need
