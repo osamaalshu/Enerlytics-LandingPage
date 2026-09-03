@@ -62,7 +62,7 @@ export function Team() {
                     <p className="text-[15.5px] font-semibold tracking-tight text-navy">
                       {m.name}
                     </p>
-                    <p className="text-[12.5px] font-medium uppercase tracking-[0.12em] text-teal">
+                    <p className="text-[12.5px] font-medium uppercase tracking-[0.12em] text-teal-deep">
                       {m.role}
                     </p>
                   </div>

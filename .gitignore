@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated media masters (2 MB PNG each) — provenance in assets-src/manifest.json; only public/media ships
+/assets-src/gen/

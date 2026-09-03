@@ -1,0 +1,115 @@
+# CHANGES.log — enerlytics-lp-redesign
+
+## 2026-09-04 (v4.1) · founder fixes
+- Chapter I heat map replaced by the ORIGINAL site's calendar (one square per day, navy→blue→amber ramp,
+  live year-to-date meter), now coloured by cost with summer weekdays priced at the day-peak band.
+- "Across sites" map beat removed from Control it (solar + storage); the map stays in Every facility.
+- Every facility: "Who we build for" — eight client-type tiles with icons under the map.
+
+## 2026-09-04 (v4) · evidence instead of slogans
+
+Founder on v3: chapter I too much jargon ("every hour has its own price…") → a heat map; the anomaly
+chapter overlapped the cycle and its photo said nothing about money → simpler, quantified; Control it
+should drop the "peak" beat and show assets in different locations; lists of names over photos = the
+poorest thing.
+- film/why-now.tsx → tariff cost heat map (12 months × 24 h, amber = money) with two facts:
+  summer-afternoon share of cost vs share of hours. Plain language, no slogans.
+- film/price-it.tsx → anomaly detection + predictive maintenance as one drift chart: efficiency
+  vs the asset's own baseline over 12 weeks, flagged in week 3, amber area = money leaving, two
+  numbers (caught early OMR 340 vs found at failure OMR 20,195; illustrative). No ladder, no photo.
+- film/site-map.tsx + lib/gulf-map.ts → Oman outline (johan/world.geo.json, public domain) with
+  sites as lit points, per-site reading/state, portfolio totals. Used in Control it (new "Across
+  sites" beat replacing "Peak") and Every facility (replacing the typographic list).
+- film/company.tsx → "why defensible" as three concrete columns instead of one line on a photo.
+
+
+## 2026-09-04 (v3) · substance back into the film
+
+Founder on v2: "feels like an AI slide ppt — what happened to the services, the six-stage cycle,
+the assets?" Fix: keep the cinema, restore the objects, vary the compositions.
+- components/film/cycle-scene.tsx — the six-stage cycle as the signature object: a pinned wheel
+  over the night aerial that rotates with scroll, arcs lighting in order, feedback arc at stage 6,
+  full stage copy (question / body / output / owner) in systems language. Nav anchor #how.
+- components/film/see-it.tsx — assets as an editorial filmstrip: five tall frames (cooling,
+  electrical, solar, storage, grid) from the site's own plates, each with a reading and a state.
+- components/film/chapter-marker.tsx replaces full-screen title cards (the slide-deck cadence).
+- components/services.tsx restored from git (light, calm) inside chapter VI after the
+  software/engineer table. Mobile scrim on PlateStory for legibility.
+
+
+## 2026-09-04 (later) · redesign/cinematic v2 — "the film" (CMO cut)
+
+Founder verdict on v1: 5.5/10 — one image is not cinema; do not mirror the MVP's parts list;
+sell the vision to investors and clients; look at film-title sites. Treatment: docs/TREATMENT_v2.md.
+
+### Added
+- components/film/: cold-open, why-now, see-it, understand-it (with the cycle), price-it,
+  control-it, prove-it, every-facility, company; plate-story (sticky plate + scrolling
+  statements), title-card (roman-numeral chapter cards, letterboxed).
+- components/cinematic/depth-plate.tsx: WebGL depth-parallax for stills (60-line shader,
+  scroll + pointer driven, poster fallback). assets-src/depth.py: Depth Anything V2 (small),
+  run locally on CPU → public/media/<id>-depth.jpg (6–14 KB each).
+- Five new plates via Codex: h09 transmission tower, h10 meter macro, h11 dawn aerial,
+  (h07 engineer / h08 rooftop pending), depth maps for all served plates.
+- Nav = chapter index (See it · Understand it · Price it · Control it · Prove it · Company).
+
+### Changed
+- Copy now speaks in systems (cooling, electrical, process loads, solar, storage, grid) —
+  no chillers/compressors/AHUs/approach-temperature on the marketing site.
+- Vision line: "The operating intelligence layer for physical energy." Investor arc explicit
+  (why now → what we see → how it pays → where it goes → why defensible → how big → who).
+- Services folded into chapter VI (Prove it) as one line; asset graph and dashboards removed.
+
+### Removed
+v1 chapters hero-scene, peak-cost, asset-graph, anomaly-scene, portfolio-scene, closing-scene,
+the-loop (replaced by the compact cycle in chapter III), services.
+
+
+## 2026-09-04 · redesign/cinematic — cinematic industrial-energy rebuild (Fable 5.1)
+
+Brief: ~/Desktop/Enerlytics_Cinematic_Web_Rebuild_Fable_5_1.pdf (guide, not gospel).
+Design + architecture documented in CINEMATIC_REBUILD.md.
+
+### Added
+- components/cinematic/: hero-scene, peak-cost, asset-graph, pv-bess-scene, energy-flow,
+  anomaly-scene, platform-engineer, portfolio-scene, closing-scene, plus primitives
+  media-source, scroll-scene (PinnedChapter), metric-overlay (Callout/CountUp/StateChip),
+  section-frame, in-view.
+- lib/scroll.ts (one scroll engine: framer-motion useScroll), lib/media.ts (VIDEO_IDS gate).
+- assets-src/: shots.json (visual bible + shot list), codex_stills.py (Codex CLI image tool),
+  generate.py (OpenAI images + sora-2 motion + ffmpeg encode), encode_images.mjs (sharp
+  posters), manifest.json (provenance), PROMPTS_FOR_CHATGPT.md. gen/ masters gitignored.
+- public/media/: 7 plates × 6 poster encodes (h01 hero, h01b closing, h02 switchgear
+  [unused, kept], h03 chiller, h04 PV, h05 BESS, h06 pullback). 1.8 MB total.
+- globals.css: ink/state/flow tokens, .instrument, scrims, grain, drift/trace/flow keyframes,
+  reduced-motion overrides.
+
+### Changed
+- app/page.tsx: new 11-chapter narrative order (see CINEMATIC_REBUILD.md).
+- app/layout.tsx: metadata mentions PV + storage; body ground = ink; theme colour #06090f.
+- components/contact.tsx: section wrapper removed (embedded in ClosingScene); aurora/spotlight
+  dropped; "Pilot deployment underway · OQ Accelerator" line removed (conservative).
+- components/the-loop.tsx: ring path coordinates rounded to 2 dp — fixes a pre-existing React
+  hydration mismatch (server/client float strings differed) that was live in production.
+- nav/footer links: + "PV + storage", "What we see".
+
+### Removed (dead after the rebuild; zero importers verified)
+hero, problem, finding-example, capabilities, preview, energy-heatmap, solutions,
+dashboard-mock, tariff-breakdown-mock, tariff-wave, live-dashboard, live-readout,
+how-it-works, pricing, aurora-background, cursor-spotlight, tilt-card, animated-counter.
+
+### Verified (external signals)
+- `tsc --noEmit` clean; `next build` clean; route / = 32.3 kB, 176 kB first-load JS.
+- Playwright (1440×900 and 390×844): 0 console errors, 0 page errors.
+- Lighthouse (local prod build, final): desktop perf 99 / a11y 97 / BP 100 / SEO 100 (LCP 0.8 s);
+  mobile perf 94 / a11y 97 / BP 100 / SEO 100 (LCP 3.0 s, CLS 0.03, TBT 0 ms). Only remaining
+  contrast flag = the partner "OQ" orange wordmark (partner brand colour, left as-is).
+- Independent verifier subagent: PASS on all 8 claims (tsc, build, 0 console errors at 1440/390,
+  all poster files present, no video requests, SEO text in raw HTML, no "loop" in visible text,
+  no imports of deleted components).
+
+### Not done / open
+- No motion clips: OpenAI API credits exhausted (sora-2 refused); Codex CLI has no video tool.
+  Plates ship as stills with CSS drift; video path wired + gated (lib/media.ts).
+- Sector stills S01–S06 and engineer shot H07 not generated.
+- Mobile LCP 3.0 s vs the 2.5 s target (throttled Lighthouse; fonts + hero poster are the chain).

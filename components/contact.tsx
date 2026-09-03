@@ -5,8 +5,6 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { ArrowRight, CheckCircle2, Mail } from "lucide-react";
 import { submitContact, type ContactState } from "@/app/actions/contact";
-import { AuroraBackground } from "@/components/aurora-background";
-import { CursorSpotlight } from "@/components/cursor-spotlight";
 import { Reveal } from "@/components/reveal";
 import { cn } from "@/lib/cn";
 
@@ -29,8 +27,8 @@ function SubmitButton() {
       type="submit"
       disabled={pending}
       className={cn(
-        "group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-teal px-6 text-[15px] font-medium text-white transition-colors",
-        "hover:bg-teal-soft",
+        "group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-teal-deep px-6 text-[15px] font-medium text-white transition-colors",
+        "hover:bg-teal",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2",
         "disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto",
       )}
@@ -55,23 +53,17 @@ export function Contact() {
   const [state, formAction] = useActionState(submitContact, initialState);
 
   return (
-    <section
-      id="contact"
-      className="relative overflow-hidden bg-navy py-24 text-white sm:py-28"
-    >
-      <AuroraBackground className="opacity-60" />
-      <div className="absolute inset-0 bg-dotgrid opacity-30" aria-hidden />
-
-      <CursorSpotlight tone="blue" intensity={0.16} size={520} className="container-narrow">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+    <div className="container-narrow relative z-10 text-white">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16 lg:items-start">
           <Reveal>
-            <h2 className="text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-[48px]">
-              The reform is live.
-              <br />
-              <span className="text-white/85">We are ready.</span>
+            <span className="instrument text-teal-fg/80">Start a conversation</span>
+            <h2 id="contact-title" className="mt-4 text-balance text-4xl font-bold leading-[1.02] tracking-[-0.025em] sm:text-5xl lg:text-[56px]">
+              Now you can see it.
             </h2>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/65">
-              Tell us a little about your facilities.
+            <p className="mt-5 max-w-md text-[16px] leading-relaxed text-white/68">
+              The same facility you saw at the top — its load, its solar, its
+              battery, its bill — now legible. Tell us about yours and we will
+              show you what the first cycle finds.
             </p>
 
             <div className="mt-10 space-y-5 text-[14px] text-white/70">
@@ -85,15 +77,6 @@ export function Contact() {
                 <a href="mailto:info@enerlytics.om" className="hover:text-white">
                   info@enerlytics.om
                 </a>
-              </div>
-              <div className="flex items-center gap-3">
-                <span
-                  aria-hidden
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5"
-                >
-                  <CheckCircle2 size={15} />
-                </span>
-                <span>Pilot deployment underway · OQ Accelerator</span>
               </div>
             </div>
           </Reveal>
@@ -245,8 +228,7 @@ export function Contact() {
             </Reveal>
           )}
         </div>
-      </CursorSpotlight>
-    </section>
+    </div>
   );
 }
 

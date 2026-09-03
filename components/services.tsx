@@ -65,7 +65,7 @@ export function Services() {
     <section id="services" className="bg-white py-24 sm:py-28">
       <div className="container-narrow">
         <Reveal className="max-w-2xl">
-          <span className="eyebrow text-teal">Services · stages 4–5</span>
+          <span className="eyebrow text-teal-deep">Services · stages 4–5</span>
           <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.08] tracking-tight text-navy sm:text-5xl">
             Where engineers
             <br />
@@ -104,7 +104,7 @@ export function Services() {
                   className="rounded-xl border border-navy/10 bg-white p-5"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[11px] tracking-widest text-teal">
+                    <span className="font-mono text-[11px] tracking-widest text-teal-deep">
                       LEVEL {a.tier}
                     </span>
                     <DepthMeter level={a.tier} />
@@ -132,7 +132,7 @@ export function Services() {
                 <h3 className="mt-5 flex items-center gap-2 text-[17px] font-semibold tracking-tight text-navy">
                   {s.name}
                   {s.tag && (
-                    <span className="rounded-full bg-navy/5 px-2 py-0.5 font-mono text-[10px] tracking-wide text-navy/55">
+                    <span className="rounded-full bg-navy/5 px-2 py-0.5 font-mono text-[10px] tracking-wide text-navy/70">
                       {s.tag}
                     </span>
                   )}

@@ -23,7 +23,7 @@ const included = [
 const scales = [
   { k: "Annual consumption", v: "GWh / yr" },
   { k: "Sites & meters", v: "count" },
-  { k: "Equipment systems", v: "chillers · compressors · pumps · AHUs" },
+  { k: "Energy systems", v: "cooling · electrical · process · solar · storage" },
   { k: "Engineering scope", v: "audit · RCx · M&V depth" },
 ];
 
@@ -32,7 +32,7 @@ export function Engagement() {
     <section id="engagement" className="bg-paper py-24 sm:py-28">
       <div className="container-narrow">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="eyebrow justify-center text-teal">Working with us</span>
+          <span className="eyebrow justify-center text-teal-deep">Working with us</span>
           <h2 className="mt-4 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-navy sm:text-[44px]">
             One engagement. The whole cycle.
           </h2>
@@ -78,7 +78,7 @@ export function Engagement() {
 
               {/* how pricing scales */}
               <div className="border-t border-navy/8 bg-mist/50 p-8 sm:p-10 lg:border-l lg:border-t-0">
-                <p className="eyebrow text-navy/45">How pricing scales</p>
+                <p className="eyebrow text-navy/65">How pricing scales</p>
                 <p className="mt-4 text-[14px] leading-relaxed text-gray">
                   A monthly fee sized to your facility — no surprises, no
                   per-seat games. It moves with:
@@ -92,13 +92,13 @@ export function Engagement() {
                       <span className="text-[14px] font-medium text-navy">
                         {s.k}
                       </span>
-                      <span className="text-right font-mono text-[11px] tracking-wide text-navy/50">
+                      <span className="text-right font-mono text-[11px] tracking-wide text-navy/70">
                         {s.v}
                       </span>
                     </li>
                   ))}
                 </ul>
-                <p className="mt-6 text-[12.5px] leading-relaxed text-navy/55">
+                <p className="mt-6 text-[12.5px] leading-relaxed text-navy/70">
                   Professional work — audits, retro-commissioning, M&V — is
                   scoped and priced explicitly. We never promise unlimited
                   engineering under a flat fee, and you never pay for depth you

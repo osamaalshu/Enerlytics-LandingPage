@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s · Enerlytics",
   },
   description:
-    "Enerlytics is the CRT-native energy intelligence platform for GCC facilities — factories, hotels, schools, and government estates. Validated data, diagnosed causes, priced fixes, verified savings.",
+    "Enerlytics is the industrial energy-intelligence platform for GCC facilities. Loads, solar and battery storage in one live model: validated data, diagnosed causes, priced in OMR at your tariff, verified savings.",
   keywords: [
     "energy intelligence",
     "CRT",
@@ -20,6 +20,11 @@ export const metadata: Metadata = {
     "peak load",
     "tariff analytics",
     "building energy",
+    "PV monitoring",
+    "battery energy storage",
+    "BESS",
+    "M&V",
+    "energy audit",
   ],
   authors: [{ name: "Enerlytics" }],
   creator: "Enerlytics",
@@ -27,7 +32,7 @@ export const metadata: Metadata = {
     type: "website",
     title: "Enerlytics — Energy intelligence for GCC facilities.",
     description:
-      "Validated data, diagnosed causes, priced fixes, verified savings — for factories, hotels, schools, and government estates.",
+      "Loads, solar and storage in one live model. Validated data, diagnosed causes, priced fixes, verified savings — for GCC facilities.",
     url: "https://www.enerlytics.om",
     siteName: "Enerlytics",
     locale: "en_US",
@@ -47,7 +52,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0A1330",
+  themeColor: "#06090f",
   width: "device-width",
   initialScale: 1,
 };
@@ -60,7 +65,7 @@ const organizationJsonLd = {
   logo: "https://www.enerlytics.om/brand/logos/horizontal.png",
   email: "info@enerlytics.om",
   description:
-    "CRT-native energy intelligence platform for the GCC's institutional buildings. Monitor, analyse, and govern every kilowatt-hour in real time.",
+    "Industrial energy-intelligence platform for GCC facilities: loads, PV and battery storage in one model — collect, understand, diagnose, improve, verify, report.",
   areaServed: ["OM", "GCC"],
 };
 
@@ -71,7 +76,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-paper text-navy antialiased">
+      <body className="min-h-screen bg-ink text-navy antialiased">
         {/* Satoshi (per Enerlytics brand) — loaded as a parallel stylesheet
             instead of a render-blocking CSS @import chain. */}
         <link rel="preconnect" href="https://api.fontshare.com" />
@@ -84,6 +89,21 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap"
           precedence="default"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+          precedence="default"
+        />
+        {/* Hero poster is the LCP element — fetch it before the CSS/JS chain. */}
+        <link
+          rel="preload"
+          as="image"
+          type="image/avif"
+          imageSrcSet="/media/h01-960.avif 960w, /media/h01-1920.avif 1920w"
+          imageSizes="100vw"
         />
         <script
           type="application/ld+json"
