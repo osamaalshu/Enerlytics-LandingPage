@@ -1,0 +1,143 @@
+{
+  "_visual_bible": {
+    "environment": "One Omani industrial site reused across every shot: a long low factory/warehouse complex on flat interior desert, rooftop PV on the main hall, a ground-mount PV field to the east, two white containerised BESS units with PCS cabinets beside an 11 kV substation yard, air-cooled chillers and an air-compressor house on/beside the roof, cable trays, a distant rocky jebel ridge.",
+    "time": "Blue hour (15-25 min after sunset) for exteriors; practical LED/sodium lighting interiors. Never midday.",
+    "camera": "Slow controlled dolly, crane, or push-in only. 24/35mm wide, 50mm plant-room, 85mm macro. No FPV, no orbit, no whip.",
+    "grade": "Neutral-dark. Deep graphite-blue sky, desaturated sand, restrained warm practicals. No teal-orange blockbuster, no bloom, no neon.",
+    "negative": "no people (except H07), no text, no signage, no logos, no watermarks, no lens flare, no fog machines, no sci-fi holograms, no glowing lines",
+    "overlay_space": "Every frame keeps one third of dark negative space (sky or shadow) for typography and instrumentation."
+  },
+  "still_common_suffix": " Photorealistic, shot on a full-frame cinema camera, natural physically-plausible lighting, fine real-world texture (dust film on metal, sand, concrete), restrained neutral-dark colour grade, deep graphite-blue sky. No people, no text, no signage, no logos, no watermark, no lens flare, no glowing holograms.",
+  "shots": [
+    {
+      "id": "H01",
+      "chapter": "00 hero",
+      "aspect": "16:9",
+      "variants": 4,
+      "prompt": "Cinematic wide establishing shot at blue hour of an industrial facility in Oman's interior desert: a long low factory hall with rooftop solar PV arrays, a ground-mount PV field to the right, two white containerised battery energy storage units with power-conversion cabinets, a small 11 kV substation yard with transformers and switchgear, air-cooled chillers on the roof, overhead cable trays, LED practical lights just switched on, faint desert haze, a rocky jebel ridge far in the background. 35mm lens, slight crane elevation, the left third of the frame is quiet dark sky for typography.",
+      "motion": "Very slow crane-up and gentle push-in over 8 seconds; the camera rises a few metres while drifting forward; no other movement; practical lights stay steady; equipment geometry must not warp."
+    },
+    {
+      "id": "H02",
+      "chapter": "02/03 collect + asset graph",
+      "aspect": "16:9",
+      "variants": 3,
+      "prompt": "Interior of a low-voltage switchgear room in an industrial plant: rows of grey steel switchgear panels with analogue and digital panel meters, a power-quality analyser, overhead cable trays with orange and black cables, concrete floor, cool industrial LED lighting, a slight haze in the air. 50mm lens, eye level, shallow depth of field, the right third of the frame in soft shadow for overlay.",
+      "motion": "Slow dolly forward along the aisle over 8 seconds, focus racking gently from the near panel to the far panel; nothing else moves."
+    },
+    {
+      "id": "H03",
+      "chapter": "05 anomaly to OMR",
+      "aspect": "16:9",
+      "variants": 3,
+      "prompt": "Close-up of an air-cooled chiller on an industrial rooftop at dusk in a hot climate: condenser coil fins with a visible film of dust and slight fouling, a compressor housing, insulated refrigerant piping, a small temperature-sensor cable tied to the pipe, warm practical light from a nearby lamp, dark sky behind. 85mm lens, shallow depth of field, the right half of the frame is dark and quiet for a diagnostic overlay.",
+      "motion": "Very slow push-in toward the fouled fins over 8 seconds with a subtle focus pull onto the sensor cable; the machine itself is static."
+    },
+    {
+      "id": "H04",
+      "chapter": "04 PV",
+      "aspect": "16:9",
+      "variants": 3,
+      "prompt": "Low-angle shot along a row of ground-mount photovoltaic modules in a desert site at blue hour, the glass reflecting the sky gradient, steel racking, DC string cabling and a combiner box, a string inverter at the end of the row, fine sand on the ground, a rocky ridge far away. 35mm lens, near-ground camera height, the upper third of the frame is open dark sky.",
+      "motion": "Slow lateral tracking shot along the row over 8 seconds, parallax between the near modules and the far ridge; reflections shift naturally; no warping of the panel grid."
+    },
+    {
+      "id": "H05",
+      "chapter": "04 BESS",
+      "aspect": "16:9",
+      "variants": 3,
+      "prompt": "Detail of a white containerised battery energy storage system at night beside a power-conversion cabinet: steel enclosure with ventilation louvres, cable glands and armoured cables entering from below, an unreadable blurred warning label, a small status lamp, a chain-link fence and gravel, practical LED lighting from a mast, desert darkness behind. 50mm lens, three-quarter angle, the left third of the frame is dark for overlay.",
+      "motion": "Slow dolly right revealing the PCS cabinet over 8 seconds; steady practical light; a faint heat shimmer above the louvres is acceptable; no other motion."
+    },
+    {
+      "id": "H06",
+      "chapter": "07 portfolio pullback / 10 closing",
+      "aspect": "16:9",
+      "variants": 3,
+      "prompt": "High aerial crane shot at night pulling back from the same industrial facility: the factory hall and PV field now dark and reflecting the sky, the substation and BESS yard lit by practical lights, a 132 kV transmission line marching off toward the horizon, the faint orange glow of a distant town, a rocky ridge, thin haze. 24mm lens, high elevation, most of the frame is dark for typography.",
+      "motion": "Slow crane-out and rise over 8 seconds so the site becomes one point of light among the landscape; no camera shake."
+    },
+    {
+      "id": "H07",
+      "chapter": "06 platform x engineer (optional)",
+      "aspect": "16:9",
+      "variants": 1,
+      "prompt": "Over-the-shoulder detail, no face visible: a gloved hand in a light-grey work sleeve holding a rugged tablet with a dark blank screen, standing in front of a rooftop cooling unit at dusk, warm practical light on the machine, blue-hour sky behind, shallow depth of field, 50mm lens, the right third of the frame dark for typography.",
+      "motion": "Almost static; a very slow push-in over 6 seconds while the engineer subtly shifts weight; no dramatic movement."
+    },
+    {
+      "id": "S01",
+      "chapter": "07 sectors — hotel",
+      "aspect": "4:5",
+      "variants": 1,
+      "prompt": "Rooftop plant deck of a large resort hotel on the Omani coast at blue hour: air-cooled chillers, cooling pipework, the hotel tower behind with a few lit windows, sea haze. 35mm lens."
+    },
+    {
+      "id": "S02",
+      "chapter": "07 sectors — oil & gas",
+      "aspect": "4:5",
+      "variants": 1,
+      "prompt": "Gas compression station in the Omani desert at blue hour: compressor packages under a steel canopy, piping racks, an electrical substation, practical lighting, flat desert. 35mm lens."
+    },
+    {
+      "id": "S03",
+      "chapter": "07 sectors — hospital",
+      "aspect": "4:5",
+      "variants": 1,
+      "prompt": "Central utility plant of a large hospital at night: chiller plant room with pumps and insulated headers, clean epoxy floor, practical fluorescent light. 35mm lens."
+    },
+    {
+      "id": "S04",
+      "chapter": "07 sectors — data centre",
+      "aspect": "4:5",
+      "variants": 1,
+      "prompt": "Exterior mechanical yard of a data centre at blue hour: rows of dry coolers and generators, cable trays, a substation, restrained practical lighting. 35mm lens."
+    },
+    {
+      "id": "S05",
+      "chapter": "07 sectors — telecom",
+      "aspect": "4:5",
+      "variants": 1,
+      "prompt": "Remote telecom tower site in the Omani mountains at blue hour: lattice tower, an equipment shelter with an outdoor AC unit, a small PV array and battery cabinet, fence, rocky ground. 35mm lens."
+    },
+    {
+      "id": "S06",
+      "chapter": "07 sectors — campus / government",
+      "aspect": "4:5",
+      "variants": 1,
+      "prompt": "Government campus in Muscat at blue hour: low white buildings with rooftop PV, a central chilled-water plant, palm trees, warm practical lights. 35mm lens."
+    },
+    {
+      "id": "H08",
+      "chapter": "II see it — rooftop plant wide",
+      "aspect": "16:9",
+      "variants": 2,
+      "prompt": "Wide cinematic shot across the rooftop plant deck of a large industrial facility at blue hour: rows of air-cooled cooling units, pipework, cable trays, a small electrical kiosk, the desert and jebel beyond, practical lights on. 35mm lens, camera at deck level, the upper half of the frame is quiet dark sky.",
+      "motion": "Very slow lateral dolly along the deck over 8 seconds; nothing else moves."
+    },
+    {
+      "id": "H09",
+      "chapter": "I the cost you cannot see — transmission tower",
+      "aspect": "16:9",
+      "variants": 2,
+      "prompt": "Dramatic low-angle shot of a steel high-voltage transmission tower and its lines against a deep graphite-blue dusk sky in the Omani desert, the faint lit facility far below on the horizon, thin haze, no people. 24mm lens, most of the frame is dark sky for typography.",
+      "motion": "Slow tilt up along the tower over 8 seconds; no other movement."
+    },
+    {
+      "id": "H10",
+      "chapter": "III understand it — meter macro",
+      "aspect": "16:9",
+      "variants": 2,
+      "prompt": "Macro close-up of an industrial power meter and current transformer inside a switchboard, digital display showing unreadable figures, copper busbars, orange cable, cool practical light, deep shadow filling the right two-thirds of the frame. 100mm macro lens, very shallow depth of field.",
+      "motion": "Almost static; a very slow push-in over 6 seconds with a gentle focus pull; the display flicker is acceptable."
+    },
+    {
+      "id": "H11",
+      "chapter": "VIII the company — sunrise over the site",
+      "aspect": "16:9",
+      "variants": 2,
+      "prompt": "Wide aerial shot of the same industrial facility with its PV field and battery yard at the first light of dawn: cool pre-sunrise sky, a thin warm line on the horizon behind the jebel, the site's practical lights still on, long soft shadows, no people. 24mm lens, high elevation, the upper half of the frame is quiet sky.",
+      "motion": "Slow crane-up over 8 seconds as the horizon brightens slightly; no camera shake."
+    }
+  ]
+}

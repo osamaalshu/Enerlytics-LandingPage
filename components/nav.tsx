@@ -7,12 +7,14 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 
+// Chapter index — the film structure is the navigation.
 const links = [
-  { href: "#how", label: "How we do it" },
-  { href: "#platform", label: "Platform" },
-  { href: "#services", label: "Services" },
-  { href: "#solutions", label: "Who it's for" },
-  { href: "#engagement", label: "Working with us" },
+  { href: "#see", label: "See it" },
+  { href: "#understand", label: "Understand it" },
+  { href: "#price", label: "Price it" },
+  { href: "#control", label: "Control it" },
+  { href: "#prove", label: "Prove it" },
+  { href: "#company", label: "Company" },
 ];
 
 export function Nav() {

@@ -5,9 +5,10 @@ const cols = [
   {
     title: "Platform",
     links: [
+      { href: "#see", label: "See it" },
       { href: "#how", label: "How we do it" },
-      { href: "#platform", label: "Capabilities" },
-      { href: "#services", label: "Services" },
+      { href: "#control", label: "Solar + storage" },
+      { href: "#prove", label: "Platform & engineers" },
       { href: "#engagement", label: "Working with us" },
     ],
   },
@@ -43,9 +44,8 @@ export function Footer() {
               className="h-10 w-auto"
             />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/65">
-              The CRT-native energy intelligence platform for the GCC&apos;s
-              energy-intensive facilities — factories, hotels, schools, and
-              government estates.
+              The operating intelligence layer for physical energy — for every
+              facility in the Gulf that pays the tariff.
             </p>
             <p className="mt-5 text-sm text-white/55">
               <span className="font-medium text-white/80">info@enerlytics.om</span>
