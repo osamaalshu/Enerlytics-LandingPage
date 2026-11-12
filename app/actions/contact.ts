@@ -76,8 +76,36 @@ export async function submitContact(
     return {
       ok: false,
       message:
-        "Something went wrong saving your request. Please email info@enerlytics.om directly.",
+        "Something went wrong saving your request. Please email muath@enerlytics.om directly.",
     };
+  }
+
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: process.env.ENQUIRY_FROM ?? "Enerlytics <onboarding@resend.dev>",
+          to: ["muath@enerlytics.om"],
+          reply_to: parsed.data.email,
+          subject: `New demo request — ${parsed.data.company}`,
+          text: [
+            `Name: ${parsed.data.name}`,
+            `Company: ${parsed.data.company}`,
+            `Email: ${parsed.data.email}`,
+            `Consumption: ${CONSUMPTION_LABEL[parsed.data.consumption]}`,
+            `Message: ${parsed.data.message}`,
+          ].join("\n"),
+        }),
+      });
+      if (!response.ok) throw new Error(`Resend returned ${response.status}`);
+    } catch (err) {
+      console.error("[contact] failed to send enquiry notification", err);
+    }
   }
 
   return {

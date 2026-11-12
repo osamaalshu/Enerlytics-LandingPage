@@ -1,15 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { ScrollProgress } from "@/components/scroll-progress";
+import { Source_Serif_4 } from "next/font/google";
 import "./globals.css";
+
+const sourceSerif = Source_Serif_4({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-source-serif" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.enerlytics.om"),
   title: {
-    default: "Enerlytics — Energy intelligence for GCC facilities.",
+    default: "Enerlytics — Energy waste, measured in money.",
     template: "%s · Enerlytics",
   },
   description:
-    "Enerlytics is the industrial energy-intelligence platform for GCC facilities. Loads, solar and battery storage in one live model: validated data, diagnosed causes, priced in OMR at your tariff, verified savings.",
+    "Software that shows a facility where it is losing money on energy, and what to fix first.",
   keywords: [
     "energy intelligence",
     "CRT",
@@ -30,18 +33,18 @@ export const metadata: Metadata = {
   creator: "Enerlytics",
   openGraph: {
     type: "website",
-    title: "Enerlytics — Energy intelligence for GCC facilities.",
-    description:
-      "Loads, solar and storage in one live model. Validated data, diagnosed causes, priced fixes, verified savings — for GCC facilities.",
+    title: "Enerlytics — Energy waste, measured in money.",
+    description: "Software that shows a facility where it is losing money on energy, and what to fix first.",
     url: "https://www.enerlytics.om",
     siteName: "Enerlytics",
     locale: "en_US",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Enerlytics — energy waste, measured in money" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Enerlytics — Energy intelligence for GCC facilities.",
-    description:
-      "Validated data, diagnosed causes, priced fixes, verified savings — for GCC facilities.",
+    title: "Enerlytics — Energy waste, measured in money.",
+    description: "Software that shows a facility where it is losing money on energy, and what to fix first.",
+    images: ["/og.png"],
   },
   icons: {
     icon: [
@@ -63,7 +66,7 @@ const organizationJsonLd = {
   name: "Enerlytics",
   url: "https://www.enerlytics.om",
   logo: "https://www.enerlytics.om/brand/logos/horizontal.png",
-  email: "info@enerlytics.om",
+  email: "muath@enerlytics.om",
   description:
     "Industrial energy-intelligence platform for GCC facilities: loads, PV and battery storage in one model — collect, understand, diagnose, improve, verify, report.",
   areaServed: ["OM", "GCC"],
@@ -76,7 +79,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-ink text-navy antialiased">
+      <body className={`${sourceSerif.variable} min-h-screen bg-ink text-navy antialiased`}>
         {/* Satoshi (per Enerlytics brand) — loaded as a parallel stylesheet
             instead of a render-blocking CSS @import chain. */}
         <link rel="preconnect" href="https://api.fontshare.com" />
@@ -96,14 +99,6 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
           precedence="default"
-        />
-        {/* Hero poster is the LCP element — fetch it before the CSS/JS chain. */}
-        <link
-          rel="preload"
-          as="image"
-          type="image/avif"
-          imageSrcSet="/media/h01-960.avif 960w, /media/h01-1920.avif 1920w"
-          imageSizes="100vw"
         />
         <script
           type="application/ld+json"

@@ -2,36 +2,22 @@ import Image from "next/image";
 import Link from "next/link";
 
 const cols = [
-  {
-    title: "Platform",
-    links: [
-      { href: "#see", label: "See it" },
-      { href: "#how", label: "How we do it" },
-      { href: "#control", label: "Solar + storage" },
-      { href: "#prove", label: "Platform & engineers" },
-      { href: "#engagement", label: "Working with us" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { href: "#team", label: "Team" },
-      { href: "#contact", label: "Contact" },
-      { href: "mailto:info@enerlytics.om", label: "Brand requests" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { href: "mailto:info@enerlytics.om", label: "Book a demo" },
-      { href: "https://www.enerlytics.om", label: "enerlytics.om" },
-    ],
-  },
+  { title: "Platform", links: [
+    { href: "#what", label: "What we do" }, { href: "#how", label: "How we do it" },
+    { href: "#who", label: "Who for" }, { href: "#where", label: "Where" },
+  ] },
+  { title: "Services", links: [
+    { href: "#services", label: "Services" }, { href: "#trust", label: "Clients & partners" },
+    { href: "#contact", label: "Contact" },
+  ] },
+  { title: "Contact", links: [
+    { href: "#contact", label: "Book a demo" }, { href: "mailto:muath@enerlytics.om", label: "muath@enerlytics.om" },
+  ] },
 ];
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-navy text-white">
+    <footer className="relative overflow-hidden bg-[#050506] text-white">
       <div className="absolute inset-0 bg-dotgrid opacity-50" aria-hidden />
       <div className="container-narrow relative py-16">
         <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
@@ -48,7 +34,7 @@ export function Footer() {
               facility in the Gulf that pays the tariff.
             </p>
             <p className="mt-5 text-sm text-white/55">
-              <span className="font-medium text-white/80">info@enerlytics.om</span>
+              <span className="font-medium text-white/80">muath@enerlytics.om</span>
               <span className="mx-2 text-white/30">·</span>
               <span>www.enerlytics.om</span>
             </p>
