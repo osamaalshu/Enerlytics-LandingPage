@@ -1,5 +1,28 @@
 # CHANGES.log — enerlytics-lp-redesign
 
+## 2026-11-11 · the data film (founder-directed redesign)
+Founder brief: four Instagram reels (two-base + one-accent palettes, design tools, animation styles) + the pitch
+deck; then seven review rounds on a prototype. Result replaces the home page:
+- `components/data-film/` (data-film.tsx, engine.ts, data-film.css): one scroll film. Dots tell the deck's data
+  story (scattered → unify → benchmark → detect → quantify, split-flap OMR figure), then the medium changes:
+  the six-stage cycle as a drawn wheel, a full-screen sector reel over the plates, Oman as a survey-style map
+  with seven illustrative sites, four services each with its own drawn schematic, clients/partners in colour on
+  a light band, closing line + contact form. One six-step type scale (Source Serif 4 + JetBrains Mono).
+- Clients: Tadoom, Al Hilal, OQ, Royal Guard of Oman Technical College, UTAS Nizwa. Partners: OQ, Aljabr, Oman
+  Net Zero. Logos from each organisation's site; the Royal Guard emblem was supplied by the founder, who
+  confirmed permission to display it.
+- Contact address is now muath@enerlytics.om everywhere. `app/actions/contact.ts` emails each enquiry to that
+  address through Resend when `RESEND_API_KEY` is set (no new dependency); without the key it only stores.
+- Link preview: `public/og.png` (1200×630) + openGraph/twitter images in `app/layout.tsx`.
+- Old `components/film/*`, `cinematic/*`, `nav.tsx`, `contact.tsx` are no longer imported (left in place).
+  The team section is not on the new page.
+Built by Codex from `docs/CODEX_BRIEF_data_film.md` (proposal 20261111-222025, applied unchanged), plus two
+architect edits: emblem in the Clients row, scroll-progress bar recoloured.
+Verified: tsc clean · next build clean · browser at 1360 px and 390 px, 0 page/console errors, no horizontal
+scroll, all sections and all 8 logos render · independent verifier PASS on 10 claims (SSR copy, og tags,
+address, assets on disk, notification cannot fail a submission, effect cleanup, no dependency change).
+Not verified: a real form submission; the Resend path (no key yet).
+
 ## 2026-09-04 (v4.1) · founder fixes
 - Chapter I heat map replaced by the ORIGINAL site's calendar (one square per day, navy→blue→amber ramp,
   live year-to-date meter), now coloured by cost with summer weekdays priced at the day-peak band.
