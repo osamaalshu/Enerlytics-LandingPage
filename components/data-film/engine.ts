@@ -204,7 +204,8 @@ export function mount(root: HTMLElement): () => void {
       if (window.scrollY < top - 1 || window.scrollY > top + span + 1) return;
       const fraction = trackPart % 1; if (fraction < .02 || fraction > .98) { settling = false; return; }
       const step = clamp(scrollDir >= 0 ? Math.ceil(trackPart - .08) : Math.floor(trackPart + .08), 0, 4);
-      settling = true; window.scrollTo({ top: top + span * step / 4, behavior: "smooth" }); }, 180); };
+      settling = true; window.scrollTo({ top: top + span * step / 4, behavior: "smooth" });
+      timeouts.push(window.setTimeout(() => { settling = false; }, 900)); }, 180); };
   const storyScroll = () => { const y = window.scrollY; if (!settling && y !== lastY) scrollDir = y > lastY ? 1 : -1; lastY = y;
     if (wheelMode) scheduleSettle(); if (!raf) raf = requestAnimationFrame(frame); };
   const modeChanged = () => { setWheelMode(); if(!wheelMode)storyTrack.scrollLeft=storyIndex*storyTrack.clientWidth; if(!raf)raf=requestAnimationFrame(frame); };
@@ -218,7 +219,7 @@ export function mount(root: HTMLElement): () => void {
   listen(window, "touchcancel", () => { touchActive = false; }, { passive: true });
   listen(story, "touchstart", (e: TouchEvent) => { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; }, { passive: true });
   listen(story, "touchend", (e: TouchEvent) => { const dx = e.changedTouches[0].clientX - tx0, dy = e.changedTouches[0].clientY - ty0;
-    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) goStory(clamp(Math.round(trackPart) + (dx < 0 ? 1 : -1), 0, 4)); }, { passive: true });
+    if (tx0 > 24 && tx0 < window.innerWidth - 24 && Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) goStory(clamp(Math.round(trackPart) + (dx < 0 ? 1 : -1), 0, 4)); }, { passive: true });
   const sectorCarousel = carousel("sectorTrack","secIndex","secCount",i=>{showSector(i);});
   const servicesCarousel = carousel("servicesTrack","svcTabs","svcCount",i=>{showSvc(i);});
 

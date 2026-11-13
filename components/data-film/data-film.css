@@ -381,3 +381,6 @@
   /* the last two step labels grow leftwards so they never run under the arrows */
   .df .story-rail button:nth-child(n+4) .story-label { left: auto; right: 0; }
 }
+
+/* iOS Safari: pinned screens use the small viewport height so their bottom controls are never under the toolbar. */
+.df .pin { height: 100vh; height: 100svh; }

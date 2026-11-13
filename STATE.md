@@ -1,8 +1,8 @@
 # STATE — enerlytics-lp-redesign
 
 ## Last run
-2026-11-11 · **The data film** — founder-directed redesign replacing the home page (see CHANGES.log). Gates: tsc clean ·
-next build clean · browser 1360/390 px 0 errors · verifier PASS 10/10. Shipped on the founder's "go live".
+2026-11-13 · Swipe sections, scroll-driven "What we do", light theme, Satoshi (see CHANGES.log). Gates: tsc clean · build
+clean · verifier PASS 10/10 · emulated iPhone 15 / SE and desktop full-page scroll clean. Shipped on the founder's "go live".
 
 ## In progress
 Nothing on the site. Waiting on the founder for: `RESEND_API_KEY` in Netlify (enquiry emails), real footage decision.
@@ -34,6 +34,9 @@ Nothing on the site. Waiting on the founder for: `RESEND_API_KEY` in Netlify (en
 - Floating-point SVG path strings differ server vs client → round coordinates.
 
 ## Next immediate step
+Founder opens enerlytics.om on a real iPhone (Safari) and reports anything off — real iOS Safari was never tested. Then: `RESEND_API_KEY` in Netlify and one test enquiry.
+
+Earlier (2026-11-12):
 Founder adds `RESEND_API_KEY` (and optionally `ENQUIRY_FROM`) in Netlify → redeploy → send one test enquiry and confirm it
 arrives at muath@enerlytics.om. Then decide on real footage and whether the team section returns.
 

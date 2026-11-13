@@ -1,5 +1,24 @@
 # CHANGES.log — enerlytics-lp-redesign
 
+## 2026-11-13 · swipe sections, scroll-driven story, light theme, brand typeface
+Founder review of the live data film, four rounds:
+- "What we do": the five steps are pinned and driven by vertical scroll on every device (a phone visitor cannot
+  scroll past them); a sideways flick also steps; a step rail (Problem · Unify · Benchmark · Detect · Quantify)
+  shows progress. Settle follows the scroll direction and never runs while a finger is down.
+- Sectors and services: native horizontal swipe carousels (arrows, index, keys, drag on desktop).
+- Light theme with a Light/Dark toggle (dark default, `?theme=light`); all engine colours come from `PALETTE`.
+- Typeface: Satoshi (brand) replaces Source Serif 4 — the serif had been matched to a mis-rendered deck.
+- One accent (orange) for emphasis in the interface.
+- Fixes: dots canvas no longer bleeds over the cycle; phone dots area sizes itself to the space above the copy;
+  pinned screens use `100svh`; settle flag cannot stick; edge flicks are left to the browser.
+Built by Codex from `docs/CODEX_BRIEF_swipe.md`, `_light_theme.md`, `_story_scroll.md` (three proposals, applied
+unchanged), then architect fixes found by browser checks (a load crash, a mis-targeted recolour, a snap-back
+settle, a stacked phone track, rail layout).
+Verified: tsc clean · next build clean · verifier PASS 10/10 on 6912813 · emulated iPhone 15 and iPhone SE
+(Chromium, touch) finger-scroll top to bottom visits every step and section in order, 0 errors, no horizontal
+page scroll · desktop wheel does the same.
+Not verified: real iOS Safari (Playwright WebKit would not run in the sandbox); iOS < 16 (`overflow: clip`).
+
 ## 2026-11-11 · the data film (founder-directed redesign)
 Founder brief: four Instagram reels (two-base + one-accent palettes, design tools, animation styles) + the pitch
 deck; then seven review rounds on a prototype. Result replaces the home page:
