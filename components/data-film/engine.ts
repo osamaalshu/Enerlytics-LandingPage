@@ -99,10 +99,17 @@ export function mount(root: HTMLElement): () => void {
     rect = narrow ? { x: W * .06, y: H * .11, w: W * .88, h: H * .37 } : { x: W * .48, y: H * .17, w: W * .46, h: H * .68 }; }
   const hero = $("what"), story = $("story"), storyTrack = $("storyTrack");
   let storyIndex = 0;
+  const wheelQuery = window.matchMedia("(min-width: 861px) and (hover: hover) and (pointer: fine)");
+  let wheelMode = wheelQuery.matches, trackPart = 0, settleTimer = 0, userCancelSettle = false;
+  const storyInner = story.querySelector<HTMLElement>(".story-inner")!;
+  const storySlides = [...story.querySelectorAll<HTMLElement>(".story-slide")];
+  const storyRail = $("storyIndex");
+  function setWheelMode() { wheelMode = wheelQuery.matches; story.classList.toggle("wheel-mode", wheelMode); storyInner.classList.toggle("wheel-inner", wheelMode); if (!wheelMode) storySlides.forEach(s => { s.style.opacity=""; s.style.transform=""; s.style.visibility=""; s.style.pointerEvents=""; }); }
+  setWheelMode();
   const X = x => rect.x + x * rect.w, Y = y => rect.y + y * rect.h;
   const MONO = '500 11px "JetBrains Mono", ui-monospace, monospace';
-  const serifFamily = getComputedStyle(root).getPropertyValue("--font-source-serif").trim() || '"Source Serif 4"';
-  const SERIF = (w, px) => `${w} ${px}px ${serifFamily}, Georgia, serif`;
+  // canvas labels use the brand face; Satoshi ships 500 and 700, so anything bolder than regular is drawn at 700
+  const SERIF = (w, px) => `${w >= 600 ? 700 : w} ${px}px "Satoshi", "Inter", system-ui, sans-serif`;
   function label(txt, x, y, alpha, col, align, font) { if (alpha <= .02) return; g.globalAlpha = clamp(alpha, 0, 1); g.fillStyle = col; g.textAlign = align || "left"; g.font = font || MONO; g.fillText(txt, x, y); }
   const cells = [...root.querySelectorAll("#board b:not(.sep)")], FINAL = cells.map(c => c.textContent);
   const intervals: number[] = [];
@@ -114,7 +121,13 @@ export function mount(root: HTMLElement): () => void {
     size();
     const heroSpan = Math.max(1, story.offsetTop - hero.offsetTop);
     const heroPart = ease(clamp((window.scrollY - hero.offsetTop) / heroSpan, 0, 1));
-    const trackPart = storyTrack.scrollLeft / Math.max(1, storyTrack.clientWidth);
+    trackPart = wheelMode ? pinProg(story) * 4 : storyTrack.scrollLeft / Math.max(1, storyTrack.clientWidth);
+    const activeStory = clamp(Math.round(trackPart),0,4);
+    if (activeStory !== storyIndex) { storyIndex=activeStory; const count=$("storyCount"); count.textContent=`${activeStory+1} / 5`; story.querySelector<HTMLButtonElement>(".previous")!.disabled=activeStory===0; story.querySelector<HTMLButtonElement>(".next")!.disabled=activeStory===4; storyRail.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",String(i===activeStory))); }
+    if (wheelMode) storySlides.forEach((slide,i) => { const distance=Math.abs(trackPart-i), alpha=reduced ? (distance < .5 ? 1 : 0) : clamp(1-distance*1.7,0,1); slide.style.opacity=String(alpha); slide.style.transform=reduced ? "none" : `translateX(${(i-trackPart)*56}px)`; slide.style.visibility=alpha ? "visible" : "hidden"; slide.style.pointerEvents=alpha ? "auto" : "none"; });
+    const railButtons=[...storyRail.querySelectorAll<HTMLButtonElement>("button")];
+    railButtons.forEach((b,i)=>{b.setAttribute("aria-pressed",String(Math.round(trackPart)===i));b.classList.toggle("passed",i<=trackPart);});
+    storyRail.style.setProperty("--rail-progress",String(trackPart/4));
     const pos = clamp(heroPart + trackPart, 0, 5);
     g.globalAlpha = 1; g.fillStyle = palette.clear; g.fillRect(0, 0, W, H);
     { const i0 = Math.min(5, Math.floor(pos)), i1 = Math.min(5, i0 + 1), k = pos - i0, c = [0, 1, 2].map(j => mix(GLOW[i0][j], GLOW[i1][j], k) | 0);
@@ -148,12 +161,13 @@ export function mount(root: HTMLElement): () => void {
     const track = $(trackId), index = $(indexId), buttons = [...index.querySelectorAll("button")], tools = index.closest(".carousel-tools")!, section = track.closest("section")!;
     const prev = tools.querySelector<HTMLButtonElement>(".previous")!, next = tools.querySelector<HTMLButtonElement>(".next")!, count = $(countId), hint = tools.querySelector<HTMLElement>(".swipe-hint")!;
     let current = 0, scrollFrame = 0, downX = 0, downLeft = 0, dragging = false;
-    const go = (i: number) => track.scrollTo({ left: i * track.clientWidth, behavior: reduced ? "auto" : "smooth" });
-    const sync = () => { scrollFrame = 0; const i = clamp(Math.round(track.scrollLeft / Math.max(1, track.clientWidth)), 0, buttons.length - 1); if (i === current) return; current = i;
+    const isStory = trackId === "storyTrack";
+    const go = (i: number) => { const target=clamp(i,0,buttons.length-1); if(isStory && wheelMode){window.scrollTo({top:story.offsetTop+(story.offsetHeight-window.innerHeight)*target/4,behavior:reduced?"auto":"smooth"});return;} track.scrollTo({ left: target * track.clientWidth, behavior: reduced ? "auto" : "smooth" }); };
+    const sync = () => { scrollFrame = 0; const i = clamp(Math.round((isStory ? trackPart : track.scrollLeft / Math.max(1, track.clientWidth))), 0, buttons.length - 1); if (i === current) return; current = i;
       buttons.forEach((b,k)=>b.setAttribute("aria-pressed",String(k===i))); count.textContent = `${i+1} / ${buttons.length}`; prev.disabled = i===0; next.disabled = i===buttons.length-1; hint.hidden = true; onChange(i); };
     const onScrollTrack = () => { hint.hidden = true; if (!scrollFrame) scrollFrame = requestAnimationFrame(sync); };
-    const key = (e: KeyboardEvent) => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); go(current + (e.key === "ArrowRight" ? 1 : -1)); } };
-    const onPrev=()=>go(current-1), onNext=()=>go(current+1);
+    const key = (e: KeyboardEvent) => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); go((isStory&&wheelMode?Math.round(trackPart):current) + (e.key === "ArrowRight" ? 1 : -1)); } };
+    const onPrev=()=>go((isStory&&wheelMode?Math.round(trackPart):current)-1), onNext=()=>go((isStory&&wheelMode?Math.round(trackPart):current)+1);
     const down = (e: PointerEvent) => { if (e.pointerType !== "mouse" || (e.target as Element).closest("button")) return; dragging = true; downX=e.clientX; downLeft=track.scrollLeft; track.classList.add("is-dragging"); track.setPointerCapture(e.pointerId); };
     const move = (e: PointerEvent) => { if (dragging) track.scrollLeft = downLeft - (e.clientX-downX); };
     const up = () => { if (!dragging) return; dragging=false; track.classList.remove("is-dragging"); go(Math.round(track.scrollLeft/Math.max(1,track.clientWidth))); };
@@ -165,6 +179,26 @@ export function mount(root: HTMLElement): () => void {
     return { track, go, get index(){return current;} };
   }
   const storyCarousel = carousel("storyTrack","storyIndex","storyCount",i=>{storyIndex=i;if(!raf)raf=requestAnimationFrame(frame);});
+  const goStory = (i: number) => storyCarousel.go(i);
+  const stepRailButtons = [...storyRail.querySelectorAll<HTMLButtonElement>("button")];
+  stepRailButtons.forEach((b,i)=>listen(b,"click",()=>goStory(i)));
+  // Settle carries the visitor on in the direction they were scrolling. Snapping to the *nearest* step pulled
+  // people back to the step they had just left whenever they paused mid-way, which fought the wheel.
+  let settling = false, lastY = window.scrollY, scrollDir = 0;
+  const cancelSettle = () => { userCancelSettle = true; settling = false; if (settleTimer) clearTimeout(settleTimer); settleTimer = 0; };
+  const scheduleSettle = () => { if (settleTimer) clearTimeout(settleTimer); userCancelSettle = false;
+    settleTimer = window.setTimeout(() => { settleTimer = 0; if (!wheelMode || userCancelSettle || reduced) return;
+      const top = story.offsetTop, span = story.offsetHeight - window.innerHeight;
+      if (window.scrollY < top - 1 || window.scrollY > top + span + 1) return;
+      const fraction = trackPart % 1; if (fraction < .02 || fraction > .98) { settling = false; return; }
+      const step = clamp(scrollDir >= 0 ? Math.ceil(trackPart - .08) : Math.floor(trackPart + .08), 0, 4);
+      settling = true; window.scrollTo({ top: top + span * step / 4, behavior: "smooth" }); }, 180); };
+  const storyScroll = () => { const y = window.scrollY; if (!settling && y !== lastY) scrollDir = y > lastY ? 1 : -1; lastY = y;
+    if (wheelMode) scheduleSettle(); if (!raf) raf = requestAnimationFrame(frame); };
+  const modeChanged = () => { setWheelMode(); if(!wheelMode)storyTrack.scrollLeft=storyIndex*storyTrack.clientWidth; if(!raf)raf=requestAnimationFrame(frame); };
+  listen(wheelQuery,"change",modeChanged);
+  listen(window,"scroll",storyScroll,{passive:true});
+  for(const event of ["wheel","touchstart","keydown"] as const) listen(window,event,cancelSettle,{passive:true});
   const sectorCarousel = carousel("sectorTrack","secIndex","secCount",i=>{showSector(i);});
   const servicesCarousel = carousel("servicesTrack","svcTabs","svcCount",i=>{showSvc(i);});
 
@@ -299,5 +333,5 @@ export function mount(root: HTMLElement): () => void {
   listen(window, "scroll", onScroll, { passive: true });
   listen(window, "resize", onResize);
   listen(document, "visibilitychange", onVisibility);
-  return () => { cleanups.forEach(fn=>fn()); listenerController.abort(); cancelAnimationFrame(raf); intervals.forEach(clearInterval); timeouts.forEach(clearTimeout); plateTimers.forEach(clearTimeout); photoBox.textContent = ""; wheel.textContent = ""; map.textContent = ""; svcArts.forEach(a=>a.textContent=""); pick.textContent = ""; };
+  return () => { cleanups.forEach(fn=>fn()); listenerController.abort(); if(settleTimer)clearTimeout(settleTimer); cancelAnimationFrame(raf); intervals.forEach(clearInterval); timeouts.forEach(clearTimeout); plateTimers.forEach(clearTimeout); photoBox.textContent = ""; wheel.textContent = ""; map.textContent = ""; svcArts.forEach(a=>a.textContent=""); pick.textContent = ""; };
 }

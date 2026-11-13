@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ScrollProgress } from "@/components/scroll-progress";
-import { Source_Serif_4 } from "next/font/google";
 import "./globals.css";
-
-const sourceSerif = Source_Serif_4({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-source-serif" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.enerlytics.om"),
@@ -79,7 +76,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${sourceSerif.variable} min-h-screen bg-ink text-navy antialiased`}>
+      <body className="min-h-screen bg-ink text-navy antialiased">
         {/* Satoshi (per Enerlytics brand) — loaded as a parallel stylesheet
             instead of a render-blocking CSS @import chain. */}
         <link rel="preconnect" href="https://api.fontshare.com" />
