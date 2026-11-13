@@ -25,9 +25,9 @@ export function DataFilm() {
     const root = document.querySelector<HTMLElement>(".df");
     return root ? mount(root) : undefined;
   }, []);
-  return <div className="df">
+  return <div className="df" data-theme="dark">
     <div id="photo" aria-hidden="true" />
-    <header className="top"><a className="brand" href="#what"><img src="/brand/logos/horizontal_white.png" alt="Enerlytics" width="520" height="120" /></a><nav className="nav" aria-label="Sections"><a href="#what" data-k="what">What we do</a><a href="#how" data-k="how">How we do it</a><a href="#who" data-k="who">Who for</a><a href="#where" data-k="where">Where</a><a href="#services" data-k="services">Services</a></nav></header>
+    <header className="top"><a className="brand" href="#what"><img className="logo-dark" src="/brand/logos/horizontal_white.png" alt="Enerlytics" width="520" height="120" /><img className="logo-light" src="/brand/logos/horizontal.png" alt="" aria-hidden="true" width="520" height="120" /></a><nav className="nav" aria-label="Sections"><a href="#what" data-k="what">What we do</a><a href="#how" data-k="how">How we do it</a><a href="#who" data-k="who">Who for</a><a href="#where" data-k="where">Where</a><a href="#services" data-k="services">Services</a></nav><button className="theme-toggle mono" type="button" aria-label="Switch to light theme">Light</button></header>
     <main id="main">
       <div className="act-one"><canvas id="field" aria-hidden="true" />
       <section className="ch" id="what"><div className="wrap"><div className="copy"><h1>Energy waste, measured in money.</h1><p>Software that shows a facility where it is losing money on energy, and what to fix first.</p><div className="row"><a className="cta" href="#contact">Book a demo <span aria-hidden="true">→</span></a><span className="mono">Scroll to follow the data ↓</span></div></div></div></section>

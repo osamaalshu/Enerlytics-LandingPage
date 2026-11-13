@@ -162,6 +162,24 @@
 @media (prefers-reduced-motion: reduce) { .df #photo i { animation: none; } .df .reel-name, .df .reel-line { transition: none; } .df #map .site.on .ring { animation: none; opacity: .7; r: 14px; } .df #svcArt .dr { animation: none; stroke-dashoffset: 0; } .df #svcArt .fd { animation: none; opacity: 1; } }
 
 .df { position:relative; isolation:isolate; min-height:100vh; overflow:clip; background:#050506; color:#f5f3ee; font-family:var(--font-source-serif), "Iowan Old Style", Georgia, serif; font-size:17px; line-height:1.5; color-scheme:dark; }
+.df { background: var(--bg); color: var(--fg); transition: background-color .3s, color .3s; }
+.df[data-theme="light"] { color-scheme: light; --bg:#f3f1ec; --fg:#0b0b0e; --soft:#3d3d45; --quiet:#62626c; --line:#d9d6ce; --lav:#5b3fe0; --layer:#0a7280; --waste:#b04a04; --money:#946000; --paper:#fff; --ink:#0b0b0e; }
+.df[data-theme="light"] #trust { border-block: 1px solid var(--line); }
+.df[data-theme="light"] #photo::after { opacity: 0; }
+.df[data-theme="light"] .brand .logo-light { display:block; }
+.df[data-theme="light"] .brand .logo-dark { display:none; }
+.df .brand .logo-light { display:none; }
+.df .theme-toggle { all:unset; cursor:pointer; color:var(--quiet); font-family:var(--mono); font-size:var(--t-label); letter-spacing:.1em; text-transform:uppercase; padding:8px 0 8px 8px; white-space:nowrap; }
+.df .theme-toggle:hover { color:var(--fg); }
+.df .top { background:linear-gradient(to bottom, color-mix(in srgb, var(--bg) 90%, transparent) 30%, transparent); }
+.df[data-theme="light"] .nav a { color:var(--quiet); }
+.df[data-theme="light"] .tabs button { color:var(--quiet); }
+.df #map text { fill:#6f6f7b; }
+.df[data-theme="light"] #map text { fill:var(--quiet); }
+.df .field-error,.df .form-message.error,.df .field input[aria-invalid="true"],.df .field textarea[aria-invalid="true"] { color:var(--waste); }
+.df .field input[aria-invalid="true"],.df .field textarea[aria-invalid="true"] { border-color:var(--waste); }
+.df .sector-wrap > .copy h2 { text-shadow:0 2px 20px #050506; }
+.df[data-theme="light"] .sector-slide .mono,.df[data-theme="light"] .sector-slide .reel-line { color:#f5f3ee; }
 .df .contact-grid { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(250px,.85fr); gap:56px; margin-top:36px; align-items:start; }
 .df form { display:grid; grid-template-columns:1fr 1fr; gap:22px 24px; }
 .df .field { min-width:0; } .df .field.full,.df .form-message,.df .form-submit { grid-column:1/-1; }
@@ -266,3 +284,6 @@
 }
 .df .sector-track { left: calc(50% - 50vw); width: 100vw; }
 .df .swipe-hint[hidden] { display: none; }
+
+/* The sector slides are photographs in both themes, so everything on them keeps the dark-theme ink. */
+.df[data-theme="light"] #who { --fg:#f5f3ee; --soft:#cfcdc7; --quiet:#b9b9c2; --line:rgba(245,243,238,.3); --layer:#27c8d8; --waste:#ff8a1f; color:var(--fg); }
