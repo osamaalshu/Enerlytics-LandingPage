@@ -26,7 +26,7 @@ export const PALETTE = {
 };
 
 export function mount(root: HTMLElement): () => void {
-  let palette = PALETTE.dark;
+  let palette = PALETTE.light;
   const IMG: Record<string, string> = Object.fromEntries(["h01","h03","h04","h05","h06","h09","h10","h11"].map(k => [k, `/media/${k}-${window.innerWidth <= 860 ? "960" : "1920"}.webp`]));
   const $ = (id: string) => root.querySelector<HTMLElement>(`#${id}`)!, reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const photoBox = $("photo"), photos: Record<string, HTMLElement> = {};
@@ -309,7 +309,6 @@ export function mount(root: HTMLElement): () => void {
     palette = PALETTE[theme]; root.dataset.theme = theme;
     themeButton.textContent = theme === "dark" ? "Light" : "Dark";
     themeButton.setAttribute("aria-label", `Switch to ${theme === "dark" ? "light" : "dark"} theme`);
-    try { localStorage.setItem("df-theme", theme); } catch {}
     SRC = palette.sources.map(rgb); LAYER = rgb(palette.layer); RAMP = palette.ramp.map(rgb); GLOW = palette.glow.map(rgb);
     BARS = BARS.map((bar, i) => ({ ...bar, c: rgb(palette.bars[i]) }));
     showStage(step < 0 ? 0 : step); showSvc(svcOn < 0 ? 0 : svcOn); setSite(site < 0 ? 0 : site);
@@ -326,9 +325,9 @@ export function mount(root: HTMLElement): () => void {
     if (!raf) raf = requestAnimationFrame(frame);
   }
   const params = new URLSearchParams(window.location.search), requested = params.get("theme");
-  let stored = ""; try { stored = localStorage.getItem("df-theme") || ""; } catch {}
-  applyTheme(requested === "light" || requested === "dark" ? requested : stored === "light" || stored === "dark" ? stored : "dark");
-  listen(themeButton, "click", () => applyTheme(root.dataset.theme === "light" ? "dark" : "light"));
+  let stored = ""; try { stored = localStorage.getItem("df-theme-choice") || ""; } catch {}
+  applyTheme(requested === "light" || requested === "dark" ? requested : stored === "light" || stored === "dark" ? stored : "light");
+  listen(themeButton, "click", () => { const next = root.dataset.theme === "light" ? "dark" : "light"; applyTheme(next); try { localStorage.setItem("df-theme-choice", next); } catch {} });
   listen($("mailCopy"), "click", e => { const b = e.currentTarget, done = () => { b.textContent = "Copied"; timeouts.push(window.setTimeout(() => b.textContent = "Copy", 1600)); };
     const pick = () => { const r = document.createRange(); r.selectNodeContents($("mailAddr")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
     try { navigator.clipboard.writeText("muath@enerlytics.om").then(done, pick); } catch (err) { pick(); } });
