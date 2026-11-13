@@ -4,9 +4,12 @@ export function mount(root: HTMLElement): () => void {
   const IMG: Record<string, string> = Object.fromEntries(["h01","h03","h04","h05","h06","h09","h10","h11"].map(k => [k, `/media/${k}-${window.innerWidth <= 860 ? "960" : "1920"}.webp`]));
   const $ = (id: string) => root.querySelector<HTMLElement>(`#${id}`)!, reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const photoBox = $("photo"), photos: Record<string, HTMLElement> = {};
+  const cleanups: (() => void)[] = [];
+  const listenerController = new AbortController();
+  const listen = (target: EventTarget, type: string, handler: EventListenerOrEventListenerObject, options: AddEventListenerOptions = {}) => target.addEventListener(type, handler, { ...options, signal: listenerController.signal });
   let plateOn = "";
   const plateTimers: number[] = [];
-  function setPlate(k, reel) { photoBox.classList.toggle("reel", !!reel); if (k === plateOn) return; const old = plateOn; plateOn = k; if (k && !photos[k]) { const i = document.createElement("i"); i.style.backgroundImage = `url(${IMG[k]})`; photoBox.appendChild(i); photos[k] = i; } for (const id in photos) photos[id].classList.toggle("on", id === k); if (old && old !== k) plateTimers.push(window.setTimeout(() => { if (plateOn !== old) { photos[old]?.remove(); delete photos[old]; } }, 1250)); }
+  function setPlate(k) { if (k === plateOn) return; const old = plateOn; plateOn = k; if (k && !photos[k]) { const i = document.createElement("i"); i.style.backgroundImage = `url(${IMG[k]})`; photoBox.appendChild(i); photos[k] = i; } for (const id in photos) photos[id].classList.toggle("on", id === k); if (old && old !== k) plateTimers.push(window.setTimeout(() => { if (plateOn !== old) { photos[old]?.remove(); delete photos[old]; } }, 1250)); }
   const cv = $("field"), g = cv.getContext("2d");
   const C = 36, R = 20, N = C * R;
   const SRC = [[139,92,246],[59,130,246],[236,72,153],[245,179,0],[52,211,153],[156,163,175]];
@@ -67,7 +70,8 @@ export function mount(root: HTMLElement): () => void {
     if (cv.width !== Math.round(W * d) || cv.height !== Math.round(H * d)) { cv.width = Math.round(W * d); cv.height = Math.round(H * d); }
     g.setTransform(d, 0, 0, d, 0, 0); narrow = W <= 860; barW = narrow ? .66 : .84;
     rect = narrow ? { x: W * .06, y: H * .11, w: W * .88, h: H * .37 } : { x: W * .48, y: H * .17, w: W * .46, h: H * .68 }; }
-  const chapters = [...root.querySelectorAll(".ch")], LAST = chapters.length - 1;
+  const hero = $("what"), story = $("story"), storyTrack = $("storyTrack");
+  let storyIndex = 0;
   const X = x => rect.x + x * rect.w, Y = y => rect.y + y * rect.h;
   const MONO = '500 11px "JetBrains Mono", ui-monospace, monospace';
   const serifFamily = getComputedStyle(root).getPropertyValue("--font-source-serif").trim() || '"Source Serif 4"';
@@ -78,18 +82,15 @@ export function mount(root: HTMLElement): () => void {
   const timeouts: number[] = [];
   function flap() { if (reduced) return; cells.forEach((c, i) => { let n = 10 + i * 7; const id = window.setInterval(() => { c.textContent = --n > 0 ? String(Math.floor(rnd() * 10)) : FINAL[i];
     c.classList.remove("flip"); void c.offsetWidth; c.classList.add("flip"); if (n <= 0) clearInterval(id); }, 55); intervals.push(id); }); }
-  let flapped = false; const dotCopies = chapters.map(c => c.querySelector('.copy'));
+  let flapped = false;
   function dots(t) {
-    const y = window.scrollY; let s = LAST, f = 1;
-    for (let j = 0; j <= LAST; j++) { const top = chapters[j].offsetTop, h = chapters[j].offsetHeight; if (y < top + h) { s = j; f = clamp((y - top) / h, 0, 1); break; } }
-    const fade = s < LAST ? 1 : 1 - clamp((f - .7) / .26, 0, 1); cv.style.opacity = fade;
-    // one block of copy at a time: each fades in as it reaches its resting line and out as it leaves
-    { const vh = window.innerHeight, rest = (window.innerWidth <= 860 ? .51 : .22) * vh;
-      dotCopies.forEach(c => { const d = c.getBoundingClientRect().top - rest; c.style.opacity = d > 0 ? 1 - clamp((d - 24) / (vh * .2), 0, 1) : 1 - clamp(-d / 130, 0, 1); }); }
-    if (fade <= 0) return;
-    size(); const pos = s + (s === LAST ? 0 : clamp((f - .35) / .6, 0, 1));
+    size();
+    const heroSpan = Math.max(1, story.offsetTop - hero.offsetTop);
+    const heroPart = ease(clamp((window.scrollY - hero.offsetTop) / heroSpan, 0, 1));
+    const trackPart = storyTrack.scrollLeft / Math.max(1, storyTrack.clientWidth);
+    const pos = clamp(heroPart + trackPart, 0, 5);
     g.globalAlpha = 1; g.fillStyle = "#050506"; g.fillRect(0, 0, W, H);
-    { const i0 = Math.min(LAST, Math.floor(pos)), i1 = Math.min(LAST, i0 + 1), k = pos - i0, c = [0, 1, 2].map(j => mix(GLOW[i0][j], GLOW[i1][j], k) | 0);
+    { const i0 = Math.min(5, Math.floor(pos)), i1 = Math.min(5, i0 + 1), k = pos - i0, c = [0, 1, 2].map(j => mix(GLOW[i0][j], GLOW[i1][j], k) | 0);
       const gx = X(.5 + .08 * Math.sin(t * .13)), gy = Y(.5 + .06 * Math.cos(t * .11)), gd = g.createRadialGradient(gx, gy, 0, gx, gy, Math.max(rect.w, rect.h) * .85);
       gd.addColorStop(0, `rgba(${c},.15)`); gd.addColorStop(1, `rgba(${c},0)`); g.fillStyle = gd; g.fillRect(0, 0, W, H); }
     const cell = rect.w / C, near = k => clamp(1 - Math.abs(pos - k) * 1.8, 0, 1);
@@ -99,8 +100,8 @@ export function mount(root: HTMLElement): () => void {
       for (let i = 0; i <= 80; i++) { const u = i / 80; i ? g.lineTo(X(u), Y(base(u))) : g.moveTo(X(u), Y(base(u))); } g.stroke();
       label("Expected", X(.02), Y(base(.02)) + 22, a34, "#27c8d8"); label("Time →", X(1), Y(.98), a34, "#9a9aa3", "right"); }
     if (a4 > .02) { label("Actual", X(.6), Y(base(.6) - .16), a4, "#f5f3ee", "right"); label("Waste", X(.9), Y(.3), a4, "#ff8a1f", "center", SERIF(600, 15)); }
-    const to = Math.min(s + 1, LAST);
-    for (const p of P) { const tt = to === s ? 0 : ease(clamp((f - .35 - .16 * p.d) / .44, 0, 1)), A = at(s, p, t), B = tt > 0 ? at(to, p, t) : A;
+    const i0 = Math.min(5, Math.floor(pos)), i1 = Math.min(5, i0 + 1), frac = pos - i0;
+    for (const p of P) { const tt = i1 === i0 ? 0 : ease(clamp(frac - .16 * p.d, 0, 1)), A = at(i0, p, t), B = tt > 0 ? at(i1, p, t) : at(i1, p, t);
       g.globalAlpha = mix(A[4], B[4], tt); g.fillStyle = `rgb(${mix(A[3][0], B[3][0], tt) | 0},${mix(A[3][1], B[3][1], tt) | 0},${mix(A[3][2], B[3][2], tt) | 0})`;
       g.beginPath(); g.arc(X(mix(A[0], B[0], tt)), Y(mix(A[1], B[1], tt)), Math.max(narrow ? 1.1 : 1.5, cell * .5 * mix(A[2], B[2], tt)), 0, 6.2832); g.fill(); }
     const a5 = clamp(pos - 4.5, 0, 1) * 2;
@@ -108,13 +109,37 @@ export function mount(root: HTMLElement): () => void {
       label(b.t, X(0), Y(b.y) - 8, al, "#f5f3ee", "left", SERIF(400, narrow ? 13 : 17));
       label("OMR " + Math.round(b.v * al).toLocaleString("en-US"), end + 12, Y(b.y + .078), al, `rgb(${b.c})`, "left", SERIF(600, narrow ? 15 : 20)); }
     g.globalAlpha = 1;
-    if (pos > 4.7 && !flapped) { flapped = true; flap(); } else if (pos < 4.2) flapped = false;
+    if (storyIndex === 4 && !flapped) { flapped = true; flap(); } else if (storyIndex !== 4) flapped = false;
   }
+
 
   /* ---------- act two: real things ---------- */
   const pinProg = el => clamp((window.scrollY - el.offsetTop) / Math.max(1, el.offsetHeight - window.innerHeight), 0, 1);
   const enter = el => clamp((window.scrollY + window.innerHeight - el.offsetTop) / window.innerHeight, 0, 1);
-  const secHow = $("how"), secWho = $("who"), secWhere = $("where");
+  const secHow = $("how"), secWhere = $("where");
+  function carousel(trackId, indexId, countId, onChange) {
+    const track = $(trackId), index = $(indexId), buttons = [...index.querySelectorAll("button")], tools = index.closest(".carousel-tools")!, section = track.closest("section")!;
+    const prev = tools.querySelector<HTMLButtonElement>(".previous")!, next = tools.querySelector<HTMLButtonElement>(".next")!, count = $(countId), hint = tools.querySelector<HTMLElement>(".swipe-hint")!;
+    let current = 0, scrollFrame = 0, downX = 0, downLeft = 0, dragging = false;
+    const go = (i: number) => track.scrollTo({ left: i * track.clientWidth, behavior: reduced ? "auto" : "smooth" });
+    const sync = () => { scrollFrame = 0; const i = clamp(Math.round(track.scrollLeft / Math.max(1, track.clientWidth)), 0, buttons.length - 1); if (i === current) return; current = i;
+      buttons.forEach((b,k)=>b.setAttribute("aria-pressed",String(k===i))); count.textContent = `${i+1} / ${buttons.length}`; prev.disabled = i===0; next.disabled = i===buttons.length-1; hint.hidden = true; onChange(i); };
+    const onScrollTrack = () => { hint.hidden = true; if (!scrollFrame) scrollFrame = requestAnimationFrame(sync); };
+    const key = (e: KeyboardEvent) => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); go(current + (e.key === "ArrowRight" ? 1 : -1)); } };
+    const onPrev=()=>go(current-1), onNext=()=>go(current+1);
+    const down = (e: PointerEvent) => { if (e.pointerType !== "mouse" || (e.target as Element).closest("button")) return; dragging = true; downX=e.clientX; downLeft=track.scrollLeft; track.classList.add("is-dragging"); track.setPointerCapture(e.pointerId); };
+    const move = (e: PointerEvent) => { if (dragging) track.scrollLeft = downLeft - (e.clientX-downX); };
+    const up = () => { if (!dragging) return; dragging=false; track.classList.remove("is-dragging"); go(Math.round(track.scrollLeft/Math.max(1,track.clientWidth))); };
+    const buttonClicks = buttons.map((b,i)=>{const fn=()=>go(i);b.addEventListener("click",fn);return fn;}); prev.addEventListener("click",onPrev); next.addEventListener("click",onNext);
+    track.addEventListener("scroll",onScrollTrack,{passive:true}); section.addEventListener("keydown",key); track.addEventListener("pointerdown",down); track.addEventListener("pointermove",move); track.addEventListener("pointerup",up); track.addEventListener("pointercancel",up);
+    prev.disabled=true; next.disabled=buttons.length<=1; count.textContent=`1 / ${buttons.length}`;
+    onScrollTrack();
+    cleanups.push(()=>{ if(scrollFrame)cancelAnimationFrame(scrollFrame); buttons.forEach((b,i)=>b.removeEventListener("click",buttonClicks[i])); prev.removeEventListener("click",onPrev); next.removeEventListener("click",onNext); track.removeEventListener("scroll",onScrollTrack); section.removeEventListener("keydown",key); track.removeEventListener("pointerdown",down); track.removeEventListener("pointermove",move); track.removeEventListener("pointerup",up); track.removeEventListener("pointercancel",up); });
+    return { track, go, get index(){return current;} };
+  }
+  const storyCarousel = carousel("storyTrack","storyIndex","storyCount",i=>{storyIndex=i;if(!raf)raf=requestAnimationFrame(frame);});
+  const sectorCarousel = carousel("sectorTrack","secIndex","secCount",i=>{showSector(i);});
+  const servicesCarousel = carousel("servicesTrack","svcTabs","svcCount",i=>{showSvc(i);});
 
   // the cycle, drawn
   const NS = "http://www.w3.org/2000/svg", el = (n, a, parent) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); parent && parent.appendChild(e); return e; };
@@ -133,19 +158,17 @@ export function mount(root: HTMLElement): () => void {
     stBtns.forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
     arcs.forEach((a, k) => { a.setAttribute("stroke", k <= i ? `rgb(${ramp(k / 5)})` : "#3a3a44"); a.setAttribute("stroke-width", k === i ? 14 : 6); });
     names.forEach((n, k) => n.setAttribute("fill", k === i ? "#f5f3ee" : k < i ? `rgb(${ramp(k / 5)})` : "#777783")); }
-  stBtns.forEach((b, i) => b.addEventListener("click", () => window.scrollTo({ top: secHow.offsetTop + (secHow.offsetHeight - window.innerHeight) * (i + .5) / 6, behavior: reduced ? "auto" : "smooth" })));
+  stBtns.forEach((b, i) => listen(b, "click", () => window.scrollTo({ top: secHow.offsetTop + (secHow.offsetHeight - window.innerHeight) * (i + .5) / 6, behavior: reduced ? "auto" : "smooth" })));
 
   // the sectors, as type
   const SECT = [["Factories", "Cooling, compressed air, process, priced per unit made.", "h01"], ["Hotels & resorts", "Cooling-driven evening peaks, comfort untouched.", "h03"],
     ["Hospitals", "24/7 critical load; savings without touching resilience.", "h05"], ["Data centres", "Mechanical overhead drift, found and priced.", "h10"],
     ["Campuses & schools", "Many buildings, one owner of the bill.", "h11"], ["Oil & gas", "Compression, pumping and utilities on a baseline.", "h06"],
     ["Telecom", "Hundreds of small sites, solar and storage, one view.", "h04"], ["Government", "Audit-ready governance for estates that never switch off.", "h09"]];
-  const secMain = root.querySelector<HTMLElement>(".reel-main")!, secIdx = $("secIndex"); secIdx.textContent = ""; let secOn = 0, secTimer = 0;
-  SECT.forEach((s, i) => { const b = document.createElement("button"); b.id = "sec" + i; b.textContent = s[0]; b.setAttribute("aria-pressed", String(i === 0));
-    b.addEventListener("click", () => window.scrollTo({ top: secWho.offsetTop + (secWho.offsetHeight - window.innerHeight) * (i + .5) / 8, behavior: reduced ? "auto" : "smooth" })); secIdx.appendChild(b); });
-  function showSector(i) { secOn = i; [...secIdx.children].forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
-    const put = () => { $("secName").textContent = SECT[i][0]; $("secLine").textContent = SECT[i][1]; $("secCount").textContent = `Sector ${i + 1} of 8`; secMain.classList.remove("out"); };
-    clearTimeout(secTimer); if (reduced) put(); else { secMain.classList.add("out"); secTimer = window.setTimeout(put, 240); } }
+  const sectorSlides = [...root.querySelectorAll<HTMLElement>(".sector-slide")];
+  let secOn = -1;
+  function setSectorPlates(active: number) { sectorSlides.forEach((slide,i)=>{ const key=SECT[i][2]; if(Math.abs(i-active)<=1) slide.style.backgroundImage=`linear-gradient(to top, rgba(5,5,6,.94) 0%, rgba(5,5,6,.5) 42%, rgba(5,5,6,.18) 70%, rgba(5,5,6,.55) 100%), url("${IMG[key]}")`; else slide.style.backgroundImage=""; }); }
+  function showSector(i: number) { secOn=i; setSectorPlates(i); }
 
   // the map, as a survey drawing
   const map = $("map"); map.textContent = ""; const BLUE = "rgba(124,92,255,.32)";
@@ -158,14 +181,15 @@ export function mount(root: HTMLElement): () => void {
     const gq = el("g", { class: "site", tabindex: 0, role: "button", "aria-label": `${s[0]}, ${s[3]}, ${s[4]}`, "aria-pressed": "false" }, siteG);
     el("circle", { cx: x, cy: y, r: 16, fill: "transparent" }, gq); el("circle", { class: "ring", cx: x, cy: y, r: 7, stroke: col }, gq); el("circle", { cx: x, cy: y, r: 4.5, fill: col, stroke: "#050506", "stroke-width": 2 }, gq);
     el("text", { class: "sname", x: x + (left ? -11 : 11), y: y + 4, "text-anchor": left ? "end" : "start" }, gq).textContent = s[0];
-    gq.addEventListener("mouseenter", () => setSite(i)); gq.addEventListener("click", () => setSite(i)); gq.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSite(i); } }); gq.addEventListener("focus", () => setSite(i)); siteEls.push(gq); });
+    listen(gq, "mouseenter", () => setSite(i)); listen(gq, "click", () => setSite(i)); listen(gq, "keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSite(i); } }); listen(gq, "focus", () => setSite(i)); siteEls.push(gq); });
   const pick = $("sitePick"); pick.textContent = ""; let site = -1;
-  SITES.forEach((s, i) => { const b = document.createElement("button"); b.id = "site" + i; b.textContent = s[0]; b.addEventListener("click", () => setSite(i)); pick.appendChild(b); });
+  SITES.forEach((s, i) => { const b = document.createElement("button"); b.id = "site" + i; b.textContent = s[0]; listen(b, "click", () => setSite(i)); pick.appendChild(b); });
   function setSite(i) { if (i === site) return; site = i; const s = SITES[i]; $("siK").textContent = s[0] + " · " + s[3]; $("siR").textContent = s[4]; $("siN").textContent = s[5];
     [...pick.children].forEach((b, k) => b.setAttribute("aria-pressed", String(k === i))); siteEls.forEach((e, k) => { e.classList.toggle("on", k === i); e.setAttribute("aria-pressed", String(k === i)); });
     links.textContent = ""; SP.forEach((q, k) => { if (k !== i) el("line", { x1: SP[i][0], y1: SP[i][1], x2: q[0], y2: q[1], stroke: "#7c5cff", "stroke-width": .8, "stroke-dasharray": "3 5", opacity: .7 }, links); }); }
   // services, each with its own drawing
-  const secSvc = $("services"), art = $("svcArt"), AX = "#3a3a44";
+  const secSvc = $("services"), svcArts = [0,1,2,3].map(i=>$(`svcArt${i}`)), AX = "#3a3a44";
+  let art = svcArts[0];
   const P2 = (fn, x0, x1, n) => { let d = ""; for (let i = 0; i <= n; i++) { const x = x0 + (x1 - x0) * i / n; d += (i ? " L " : "M ") + x.toFixed(1) + " " + fn(x).toFixed(1); } return d; };
   const ln = (d, col, w, cls, dash) => el("path", Object.assign({ d, fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round" }, cls ? { class: cls, pathLength: 1 } : {}, dash ? { "stroke-dasharray": dash } : {}), art);
   const tx = (s, x, y, o) => { const e = el("text", Object.assign({ x, y }, o || {}), art); e.textContent = s; return e; };
@@ -193,14 +217,10 @@ export function mount(root: HTMLElement): () => void {
       ln("M 50 180 L 480 180", "#f5f3ee", 1.5, null, "5 6"); ln(P2(f, 50, 480, 140), c, 3, "dr");
       ln("M 250 40 L 250 320", AX, 1, null, "2 5"); tx("Tuned", 250, 34, { "text-anchor": "middle" });
       tx("As designed", 486, 176, { "text-anchor": "end" }); tx("As found", 70, 300, { class: "fd" }); tx("After", 420, 210, { class: "nm fd" }); }]];
-  const svcTabs = $("svcTabs"); svcTabs.textContent = ""; let svcOn = -1;
-  SVC.forEach((s, i) => { const b = document.createElement("button"); b.id = "svc" + i; b.textContent = s[0];
-    b.addEventListener("click", () => window.scrollTo({ top: secSvc.offsetTop + (secSvc.offsetHeight - window.innerHeight) * (i + .5) / 4, behavior: reduced ? "auto" : "smooth" })); svcTabs.appendChild(b); });
-  function showSvc(i) { svcOn = i; const s = SVC[i]; $("svN").textContent = s[0]; $("svB").textContent = s[1]; $("svS").textContent = "In the cycle · " + s[2];
-    [...svcTabs.children].forEach((b, k) => b.setAttribute("aria-pressed", String(k === i))); art.textContent = ""; s[3]();
-    tx("Schematic", 500, 356, { "text-anchor": "end" }); }
-  showStage(0); setSite(0); showSvc(0);
-  $("mailCopy").addEventListener("click", e => { const b = e.currentTarget, done = () => { b.textContent = "Copied"; timeouts.push(window.setTimeout(() => b.textContent = "Copy", 1600)); };
+  let svcOn = -1;
+  function showSvc(i) { svcOn = i; art = svcArts[i]; art.textContent = ""; SVC[i][3](); tx("Schematic", 500, 356, { "text-anchor": "end" }); }
+  showStage(0); setSite(0); showSector(0); showSvc(0);
+  listen($("mailCopy"), "click", e => { const b = e.currentTarget, done = () => { b.textContent = "Copied"; timeouts.push(window.setTimeout(() => b.textContent = "Copy", 1600)); };
     const pick = () => { const r = document.createRange(); r.selectNodeContents($("mailAddr")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
     try { navigator.clipboard.writeText("muath@enerlytics.om").then(done, pick); } catch (err) { pick(); } });
 
@@ -208,24 +228,23 @@ export function mount(root: HTMLElement): () => void {
   let lastKey = "";
   let raf = 0;
   const onScroll = () => { if (!raf) raf = requestAnimationFrame(frame); };
-  const onResize = () => { if (window.innerWidth <= 860 !== (IMG.h01.endsWith("960.webp"))) { for (const id in photos) photos[id].remove(); for (const id in photos) delete photos[id]; plateOn = ""; for (const k in IMG) IMG[k] = `/media/${k}-${window.innerWidth <= 860 ? "960" : "1920"}.webp`; } if (!raf) raf = requestAnimationFrame(frame); };
+  const onResize = () => { if (window.innerWidth <= 860 !== (IMG.h01.endsWith("960.webp"))) { for (const id in photos) photos[id].remove(); for (const id in photos) delete photos[id]; plateOn = ""; for (const k in IMG) IMG[k] = `/media/${k}-${window.innerWidth <= 860 ? "960" : "1920"}.webp`; } setSectorPlates(secOn < 0 ? 0 : secOn); [storyCarousel, sectorCarousel, servicesCarousel].forEach(c => { c.track.scrollLeft = c.index * c.track.clientWidth; }); if (!raf) raf = requestAnimationFrame(frame); };
   const onVisibility = () => { if (!document.hidden && !raf) raf = requestAnimationFrame(frame); };
   function frame(ms) {
     raf = 0;
     const t = reduced ? 0 : ms / 1000; dots(t);
     const st = Math.min(5, Math.floor(pinProg(secHow) * 6)); if (st !== step) showStage(st);
     rot = reduced ? -step * 60 : mix(rot, -step * 60, .09); spin.setAttribute("transform", `rotate(${rot.toFixed(2)} 250 250)`); names.forEach(n => n.setAttribute("transform", `rotate(${(-rot).toFixed(2)})`));
-    const so = Math.min(7, Math.floor(pinProg(secWho) * 8)); if (so !== secOn) showSector(so);
-    const sv = Math.min(3, Math.floor(pinProg(secSvc) * 4)); if (sv !== svcOn) showSvc(sv);
     if (!reduced) outline.setAttribute("stroke-dashoffset", (1 - clamp(enter(secWhere) * .7 + pinProg(secWhere) * 1.2, 0, 1)).toFixed(3));
     let key = "what"; for (const [k, e] of keyed) if (e.getBoundingClientRect().top < window.innerHeight * .5) key = k;
+    if (key === "story") key = "what";
     if (key !== lastKey) { lastKey = key; navEls.forEach(a => a.dataset.k === key ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")); }
-    setPlate(key === "how" ? "h06" : key === "who" ? SECT[secOn][2] : key === "contact" ? "h11" : "", key === "who");
+    setPlate(key === "how" ? "h06" : key === "contact" ? "h11" : "");
     if (!reduced && !document.hidden) raf = requestAnimationFrame(frame);
   }
   raf = requestAnimationFrame(frame);
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onResize);
-  document.addEventListener("visibilitychange", onVisibility);
-  return () => { cancelAnimationFrame(raf); window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onResize); document.removeEventListener("visibilitychange", onVisibility); clearTimeout(secTimer); intervals.forEach(clearInterval); timeouts.forEach(clearTimeout); plateTimers.forEach(clearTimeout); photoBox.textContent = ""; wheel.textContent = ""; map.textContent = ""; art.textContent = ""; secIdx.textContent = ""; pick.textContent = ""; svcTabs.textContent = ""; };
+  listen(window, "scroll", onScroll, { passive: true });
+  listen(window, "resize", onResize);
+  listen(document, "visibilitychange", onVisibility);
+  return () => { cleanups.forEach(fn=>fn()); listenerController.abort(); cancelAnimationFrame(raf); intervals.forEach(clearInterval); timeouts.forEach(clearTimeout); plateTimers.forEach(clearTimeout); photoBox.textContent = ""; wheel.textContent = ""; map.textContent = ""; svcArts.forEach(a=>a.textContent=""); pick.textContent = ""; };
 }
