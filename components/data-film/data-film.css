@@ -347,3 +347,37 @@
   .df .story-slide { flex:0 0 100%; }
   .df .story-label { top:26px; }
 }
+
+/* The story is pinned and scroll-driven at every size, so nobody can scroll past the five steps. */
+.df .story.wheel-mode { height: calc(100svh + 300vh); min-height: 0; }
+.df .story-inner.wheel-inner { position: sticky; top: 0; height: 100svh; }
+.df .story.wheel-mode .story-track { overflow: hidden; scroll-snap-type: none; touch-action: pan-y; }
+.df .story.wheel-mode .story-slide { transition: opacity .12s linear, transform .12s linear; }
+.df .story .swipe-hint[hidden] { display: none !important; }
+@media (min-width: 861px) {
+  .df .story.wheel-mode { height: calc(100svh + 340vh); }
+  .df .story.wheel-mode .story-track { position: relative; display: block; height: auto; }
+  .df .story.wheel-mode .story-slide { position: absolute; inset: 0 auto auto 0; width: 100%; }
+  .df .story.wheel-mode .story-slide:first-child { position: relative; }
+  .df .story.wheel-mode .story-inner > .wrap { position: relative; height: 100%; }
+  .df .story.wheel-mode .carousel-tools { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: 5vh; width: auto; gap: 0 40px; }
+  .df .story.wheel-mode .story-rail { margin-top: 0; }
+}
+@media (max-width: 860px) {
+  .df .story.wheel-mode .story-inner > .wrap { height: 100%; }
+  .df .story.wheel-mode .story-track { display: block; }
+  .df .story.wheel-mode .story-slide { position: absolute; inset: 0; width: 100%; flex: none; }
+}
+@media (prefers-reduced-motion: reduce) { .df .story.wheel-mode .story-slide { transition: none; } }
+/* Phone, last step: the heading already says it, so drop the paragraph to keep the copy clear of the priced bars. */
+@media (max-width: 860px) {
+  .df .story-slide:nth-child(5) p { display: none; }
+  .df .story-slide:nth-child(5) .board { margin-top: 12px; }
+}
+
+@media (max-width: 860px) {
+  /* keep the page gutter on the story copy (the track is full-bleed so swipes register anywhere) */
+  .df .story.wheel-mode .story-slide { padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
+  /* the last two step labels grow leftwards so they never run under the arrows */
+  .df .story-rail button:nth-child(n+4) .story-label { left: auto; right: 0; }
+}

@@ -96,16 +96,27 @@ export function mount(root: HTMLElement): () => void {
   function size() { const d = Math.min(window.devicePixelRatio || 1, 2); W = cv.clientWidth; H = cv.clientHeight;
     if (cv.width !== Math.round(W * d) || cv.height !== Math.round(H * d)) { cv.width = Math.round(W * d); cv.height = Math.round(H * d); }
     g.setTransform(d, 0, 0, d, 0, 0); narrow = W <= 860; barW = narrow ? .66 : .84;
-    rect = narrow ? { x: W * .06, y: H * .11, w: W * .88, h: H * .37 } : { x: W * .48, y: H * .17, w: W * .46, h: H * .68 }; }
+    // Phone: the dots get exactly the space above the tallest block of story copy, so text never rides into them on a short screen.
+    const top = H * .11, room = copyTop > 0 ? copyTop - top - 22 : H * .37;
+    rect = narrow ? { x: W * .06, y: top, w: W * .88, h: clamp(room, 110, H * .37) } : { x: W * .48, y: H * .17, w: W * .46, h: H * .68 }; }
+  // Highest point any story slide's copy reaches, measured from the top of the pinned screen (slides are bottom-anchored, so this is stable).
+  let copyTop = 0;
+  function measureCopy() { const frameEl = root.querySelector<HTMLElement>(".story-inner"); if (!frameEl || window.innerWidth > 860) { copyTop = 0; return; }
+    const base = frameEl.getBoundingClientRect().top; let best = Infinity;
+    root.querySelectorAll<HTMLElement>(".story-slide").forEach(sl => { for (const k of Array.from(sl.children) as HTMLElement[]) { if (getComputedStyle(k).display === "none") continue; best = Math.min(best, k.getBoundingClientRect().top - base); } });
+    copyTop = isFinite(best) ? best : 0; }
   const hero = $("what"), story = $("story"), storyTrack = $("storyTrack");
   let storyIndex = 0;
-  const wheelQuery = window.matchMedia("(min-width: 861px) and (hover: hover) and (pointer: fine)");
+  const wheelQuery = window.matchMedia("all");
   let wheelMode = wheelQuery.matches, trackPart = 0, settleTimer = 0, userCancelSettle = false;
   const storyInner = story.querySelector<HTMLElement>(".story-inner")!;
   const storySlides = [...story.querySelectorAll<HTMLElement>(".story-slide")];
   const storyRail = $("storyIndex");
   function setWheelMode() { wheelMode = wheelQuery.matches; story.classList.toggle("wheel-mode", wheelMode); storyInner.classList.toggle("wheel-inner", wheelMode); if (!wheelMode) storySlides.forEach(s => { s.style.opacity=""; s.style.transform=""; s.style.visibility=""; s.style.pointerEvents=""; }); }
   setWheelMode();
+  measureCopy(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measureCopy(); }).catch(() => {});
+  listen(window, "resize", measureCopy);
+  const storyHint = story.querySelector<HTMLElement>(".swipe-hint");
   const X = x => rect.x + x * rect.w, Y = y => rect.y + y * rect.h;
   const MONO = '500 11px "JetBrains Mono", ui-monospace, monospace';
   // canvas labels use the brand face; Satoshi ships 500 and 700, so anything bolder than regular is drawn at 700
@@ -123,6 +134,7 @@ export function mount(root: HTMLElement): () => void {
     const heroPart = ease(clamp((window.scrollY - hero.offsetTop) / heroSpan, 0, 1));
     trackPart = wheelMode ? pinProg(story) * 4 : storyTrack.scrollLeft / Math.max(1, storyTrack.clientWidth);
     const activeStory = clamp(Math.round(trackPart),0,4);
+    if (trackPart > .35 && storyHint && !storyHint.hidden) storyHint.hidden = true;
     if (activeStory !== storyIndex) { storyIndex=activeStory; const count=$("storyCount"); count.textContent=`${activeStory+1} / 5`; story.querySelector<HTMLButtonElement>(".previous")!.disabled=activeStory===0; story.querySelector<HTMLButtonElement>(".next")!.disabled=activeStory===4; storyRail.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",String(i===activeStory))); }
     if (wheelMode) storySlides.forEach((slide,i) => { const distance=Math.abs(trackPart-i), alpha=reduced ? (distance < .5 ? 1 : 0) : clamp(1-distance*1.7,0,1); slide.style.opacity=String(alpha); slide.style.transform=reduced ? "none" : `translateX(${(i-trackPart)*56}px)`; slide.style.visibility=alpha ? "visible" : "hidden"; slide.style.pointerEvents=alpha ? "auto" : "none"; });
     const railButtons=[...storyRail.querySelectorAll<HTMLButtonElement>("button")];
@@ -146,7 +158,7 @@ export function mount(root: HTMLElement): () => void {
       g.beginPath(); g.arc(X(mix(A[0], B[0], tt)), Y(mix(A[1], B[1], tt)), Math.max(narrow ? 1.1 : 1.5, cell * .5 * mix(A[2], B[2], tt)), 0, 6.2832); g.fill(); }
     const a5 = clamp(pos - 4.5, 0, 1) * 2;
     if (a5 > .02) for (const b of BARS) { const al = clamp(a5, 0, 1), end = X(barW * b.v / 5000);
-      label(b.t, X(0), Y(b.y) - 8, al, palette.primary, "left", SERIF(400, narrow ? 13 : 17));
+      if (rect.h >= 175) label(b.t, X(0), Y(b.y) - 8, al, palette.primary, "left", SERIF(400, narrow ? 13 : 17));
       label("OMR " + Math.round(b.v * al).toLocaleString("en-US"), end + 12, Y(b.y + .078), al, `rgb(${b.c})`, "left", SERIF(600, narrow ? 15 : 20)); }
     g.globalAlpha = 1;
     if (storyIndex === 4 && !flapped) { flapped = true; flap(); } else if (storyIndex !== 4) flapped = false;
@@ -187,7 +199,7 @@ export function mount(root: HTMLElement): () => void {
   let settling = false, lastY = window.scrollY, scrollDir = 0;
   const cancelSettle = () => { userCancelSettle = true; settling = false; if (settleTimer) clearTimeout(settleTimer); settleTimer = 0; };
   const scheduleSettle = () => { if (settleTimer) clearTimeout(settleTimer); userCancelSettle = false;
-    settleTimer = window.setTimeout(() => { settleTimer = 0; if (!wheelMode || userCancelSettle || reduced) return;
+    settleTimer = window.setTimeout(() => { settleTimer = 0; if (!wheelMode || userCancelSettle || reduced || touchActive) return;
       const top = story.offsetTop, span = story.offsetHeight - window.innerHeight;
       if (window.scrollY < top - 1 || window.scrollY > top + span + 1) return;
       const fraction = trackPart % 1; if (fraction < .02 || fraction > .98) { settling = false; return; }
@@ -199,6 +211,14 @@ export function mount(root: HTMLElement): () => void {
   listen(wheelQuery,"change",modeChanged);
   listen(window,"scroll",storyScroll,{passive:true});
   for(const event of ["wheel","touchstart","keydown"] as const) listen(window,event,cancelSettle,{passive:true});
+  // Touch: never settle while a finger is down; a sideways flick inside the story steps forward or back.
+  let touchActive = false, tx0 = 0, ty0 = 0;
+  listen(window, "touchstart", () => { touchActive = true; }, { passive: true });
+  listen(window, "touchend", () => { touchActive = false; if (wheelMode) scheduleSettle(); }, { passive: true });
+  listen(window, "touchcancel", () => { touchActive = false; }, { passive: true });
+  listen(story, "touchstart", (e: TouchEvent) => { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; }, { passive: true });
+  listen(story, "touchend", (e: TouchEvent) => { const dx = e.changedTouches[0].clientX - tx0, dy = e.changedTouches[0].clientY - ty0;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) goStory(clamp(Math.round(trackPart) + (dx < 0 ? 1 : -1), 0, 4)); }, { passive: true });
   const sectorCarousel = carousel("sectorTrack","secIndex","secCount",i=>{showSector(i);});
   const servicesCarousel = carousel("servicesTrack","svcTabs","svcCount",i=>{showSvc(i);});
 
